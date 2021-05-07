@@ -1,14 +1,14 @@
 <template>
   <div class="layoout">
-    <LayoutHeader />
-    <div class="content">
+    <LayoutHeader :isCollapse="isCollapse" />
+    <div class="content" :class="isCollapse ? 'isCollapse' : ''">
       <router-view></router-view>
     </div>
-    <Menu></Menu>
+    <Menu @collapse="collapseChange"></Menu>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import LayoutHeader from "./header/index.vue";
 import Menu from "./menu/index.vue";
 
@@ -19,7 +19,13 @@ export default defineComponent({
     Menu,
   },
   setup() {
-    return {};
+    const isCollapse = ref(false);
+    return { isCollapse };
+  },
+  methods: {
+    collapseChange(isCollapse) {
+      this.isCollapse = isCollapse;
+    },
   },
 });
 </script>
@@ -32,6 +38,9 @@ export default defineComponent({
     width: 100%;
     height: 100%;
     padding-left: 200px;
+  }
+  .isCollapse {
+    padding-left: 65px;
   }
 }
 </style>

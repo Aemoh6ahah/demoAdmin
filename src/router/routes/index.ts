@@ -6,43 +6,95 @@ const routes: Array<RouteRecordRaw> = [
     path: "/",
     name: "",
     component: Layout,
-    redirect: "/project/login",
+    redirect: { name: 'meun1-1' },
     children: [
       {
-        path: "project",
-        name: "layout",
-        redirect: "/project/login",
-        meta: {
-          title: "标题",
-        },
+        path: "meun1-1",
+        name: "meun1-1",
+        redirect: { name: 'meun2-1' },
         component: RouterView,
+        meta: {
+          title: "首页",
+        },
         children: [
           {
-            path: "login",
-            name: "login",
+            path: "meun2-1",
+            name: "meun2-1",
+            redirect: { name: 'meun3-1' },
+
+            component: RouterView,
             meta: {
-              title: "登录",
+              title: "二级菜单1",
             },
-            component: () => import("@/pages/home/index.vue"),
+            children: [
+              {
+                path: "meun3-1",
+                name: "meun3-1",
+                meta: {
+                  title: "三级菜单1",
+                },
+                component: () => import("@/pages/home/index.vue"),
+              },
+              {
+                path: "meun3-4",
+                name: "meun3-4",
+                meta: {
+                  title: "三级菜单4",
+                },
+                component: () => import("@/pages/home/index.vue"),
+              }
+            ]
+          },
+          {
+            path: "meun2-3",
+            name: "meun2-3",
+            redirect: { name: 'meun3-3' },
+
+            component: RouterView,
+            meta: {
+              title: "二级菜单3",
+            },
+            children: [
+              {
+                path: "meun3-3",
+                name: "meun3-3",
+                meta: {
+                  title: "三级菜单3",
+                },
+                component: () => import("@/pages/home/index.vue"),
+              }
+            ]
           },
         ],
       },
       {
-        path: "project1",
-        name: "layout1",
-        redirect: "/project1/login1",
-        meta: {
-          title: "标题1",
-        },
+        path: "meun1-2",
+        name: "meun1-2",
+        redirect: { name: 'meun2-2' },
         component: RouterView,
+        meta: {
+          title: "一级菜单2",
+        },
         children: [
           {
-            path: "login1",
-            name: "login1",
+            path: "meun2-2",
+            name: "meun2-2",
+            redirect: { name: 'meun3-2' },
+
+            component: RouterView,
             meta: {
-              title: "登录1",
+              title: "二级菜单2",
             },
-            component: () => import("@/pages/login/index.vue"),
+            children: [
+              {
+                path: "meun3-2",
+                name: "meun3-2",
+                meta: {
+                  title: "三级菜单2",
+                },
+                component: () => import("@/pages/home/test.vue"),
+              }
+            ]
           },
         ],
       },

@@ -1,24 +1,5 @@
 <template>
-  <div>
-    <div class="test">
-      <div class="wrap">
-        <div class="wrap-item"></div>
-        <div class="wrap-item"></div>
-        <div class="wrap-item"></div>
-        <div class="wrap-item"></div>
-        <div class="wrap-item"></div>
-        <div class="wrap-item"></div>
-        <div class="wrap-item"></div>
-        <div class="wrap-item"></div>
-        <div class="wrap-item"></div>
-        <div class="wrap-item"></div>
-        <div class="wrap-item"></div>
-        <div class="wrap-item"></div>
-        <div class="wrap-item"></div>
-        <div class="wrap-item"></div>
-      </div>
-    </div>
-  </div>
+  <div>首页</div>
 </template>
 <script lang="ts">
 import { ref, Ref, watch, reactive, defineComponent } from "vue";
