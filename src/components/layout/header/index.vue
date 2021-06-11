@@ -53,7 +53,6 @@ export default defineComponent({
 </script>
 <style lang="less" scoped>
 .header {
-  width: 100%;
   height: 61px;
   padding-left: 200px;
   transition: 0.8s;

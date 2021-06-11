@@ -35,9 +35,9 @@ export default defineComponent({
   width: 100%;
   height: 100%;
   .content {
-    width: 100%;
     height: 100%;
     padding-left: 200px;
+    transition: 0.8s;
   }
   .isCollapse {
     padding-left: 65px;

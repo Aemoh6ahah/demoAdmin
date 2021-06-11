@@ -11,16 +11,19 @@
       @select="selectMeun"
       active-text-color="#46faf6"
     >
-      <el-button type="text" @click="handleCollapse">
-        {{ isCollapse ? "展开" : "收起" }}
-      </el-button>
+      <div class="coll-btn">
+        <el-button type="text" class="icon" @click="handleCollapse">
+          <i v-if="isCollapse" class="el-icon-s-fold"></i>
+          <i v-else class="el-icon-s-unfold"></i>
+        </el-button>
+      </div>
       <el-submenu
         :index="i.name"
         v-for="i in renderMenuMap.children"
         :key="i.name"
       >
         <template #title>
-          <i class="el-icon-location"></i><span>{{ i.meta.title }}</span>
+          <i :class="i.meta.icon"></i><span>{{ i.meta.title }}</span>
         </template>
         <el-menu-item-group>
           <el-menu-item v-for="j in i.children" :key="j.name" :index="j.name">{{
@@ -81,5 +84,18 @@ export default defineComponent({
 }
 .collapse {
   width: 66px;
+}
+/deep/.el-submenu__title {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.coll-btn {
+  display: flex;
+  flex-direction: row-reverse;
+  .icon {
+    font-size: 20px;
+    margin-right: 20px;
+  }
 }
 </style>

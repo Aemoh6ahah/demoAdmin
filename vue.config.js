@@ -1,3 +1,4 @@
+require('./src/utils/funny.js')
 module.exports = {
   lintOnSave: false, //关闭eslint
 
