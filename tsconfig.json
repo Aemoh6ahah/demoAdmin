@@ -6,6 +6,9 @@
         "src/*"
       ]
     },
+    "typeRoots": [
+      "./types"
+    ],
   },
   "exclude": [
     "node_modules"

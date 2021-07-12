@@ -3,10 +3,9 @@
     <ElMenu
       :default-active="defaultActive"
       class="hor-menu"
-      background-color="#46aae6"
-      text-color="#fff"
+      background-color="#4662E6"
+      text-color="#abbaf22"
       size="medium"
-      active-text-color="#46faf6"
       mode="horizontal"
       @select="selectMeun"
     >
@@ -40,7 +39,6 @@ export default defineComponent({
   methods: {
     selectMeun(index: string, path: string) {
       this.$router.push({ name: index });
-      console.log(path);
     },
   },
 
@@ -61,5 +59,13 @@ export default defineComponent({
 }
 .isCollapse {
   padding-left: 65px;
+}
+/deep/.el-menu-item.is-active {
+  color: #fff !important;
+}
+/deep/.el-menu-item {
+  &:hover {
+    color: #fff !important;
+  }
 }
 </style>

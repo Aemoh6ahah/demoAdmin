@@ -1,7 +1,8 @@
 <template>
   <div class="state">
-    <!-- <span class="point" :style="{ backgroundColor: renderConfig.color }"></span> -->
-    <!-- <span class="text">{{ renderConfig.label }}</span> -->
+    <span class="point" :style="{ backgroundColor: renderConfig.color }"></span>
+    <span class="text">{{ renderConfig.label }}</span>
+    <!-- {{ renderConfig }} -->
   </div>
 </template>
 <script lang="ts">
@@ -37,13 +38,21 @@ export default defineComponent({
     state: {
       type: [String, Number],
     },
+    scope: {
+      type: Object,
+    },
+  },
+  setup() {
+    return {};
   },
   computed: {
-    // renderConfig() {
-    //   return this.config.find((_: config) => {
-    //     return _.stateCode == this.state;
-    //   });
-    // },
+    renderConfig() {
+      return (
+        this.config.find((_: config) => {
+          return _.stateCode == this.scope.row.state;
+        }) || {}
+      );
+    },
   },
 });
 </script>

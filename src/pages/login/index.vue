@@ -22,8 +22,6 @@ export default defineComponent({
       psw: "",
     });
     const submit = async () => {
-      console.log(formData.psw, formData.account);
-      console.log(userLogin);
       await userLogin(formData);
     };
     const get = async () => {

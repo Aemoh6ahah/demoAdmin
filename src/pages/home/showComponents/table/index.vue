@@ -18,7 +18,7 @@ interface FormData {
   psw: string;
 }
 export default defineComponent({
-  name: "login",
+  name: "table",
   components: { CustomTable },
   setup(props, context) {
     const formData = reactive<FormData>({
@@ -29,17 +29,12 @@ export default defineComponent({
       await userLogin(formData);
     };
 
-    const get = async () => {
-      await testGet();
-    };
-
     const tableColumns = reactive(columns);
     const showId = ref();
     const timer = ref();
     return {
       submit,
       formData,
-      get,
       tableColumns,
       showId,
       timer,
@@ -47,8 +42,6 @@ export default defineComponent({
   },
   methods: {
     loadData(query): Promise<any> {
-      //
-
       return new Promise((res) => {
         let data = [];
         for (let i = 0; i < 10; i++) {
@@ -63,23 +56,6 @@ export default defineComponent({
         });
       });
     },
-    switchShow(id) {
-      this.showId = id;
-    },
-    autoSwitch(): void {
-      this.timer = setInterval(() => {
-        this.showId = this.showId === 1 ? 2 : 1;
-      }, 1000);
-    },
-    mouseOver() {
-      clearInterval(this.timer);
-    },
-    mouseLeave() {
-      this.autoSwitch();
-    },
-  },
-  mounted() {
-    this.autoSwitch();
   },
 });
 </script>

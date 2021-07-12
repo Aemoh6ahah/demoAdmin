@@ -6,43 +6,42 @@ const routes: Array<RouteRecordRaw> = [
     path: "/",
     name: "",
     component: Layout,
-    redirect: { name: "meun1-1" },
+    redirect: { name: "home" },
     children: [
       {
-        path: "meun1-1",
-        name: "meun1-1",
-        redirect: { name: "meun2-1" },
+        path: "home",
+        name: "home",
+        redirect: { name: "componentsManagement" },
         component: RouterView,
         meta: {
           title: "首页",
         },
         children: [
           {
-            path: "meun2-1",
-            name: "meun2-1",
-            redirect: { name: "meun3-1" },
-
+            path: "componentsManagement",
+            name: "componentsManagement",
+            redirect: { name: "table" },
             component: RouterView,
             meta: {
-              title: "首页",
+              title: "组件管理",
               icon: "el-icon-house",
             },
             children: [
               {
-                path: "meun3-1",
-                name: "meun3-1",
+                path: "table",
+                name: "table",
                 meta: {
-                  title: "三级菜单1",
+                  title: "表格",
                 },
-                component: () => import("@/pages/home/index.vue"),
+                component: () => import("@/pages/home/showComponents/table/index.vue"),
               },
               {
-                path: "meun3-4",
-                name: "meun3-4",
+                path: "listPage",
+                name: "listPage",
                 meta: {
-                  title: "三级菜单4",
+                  title: "表格页面",
                 },
-                component: () => import("@/pages/home/index.vue"),
+                component: () => import("@/pages/home/showComponents/listPage/index.vue"),
               }
             ]
           },
@@ -68,14 +67,14 @@ const routes: Array<RouteRecordRaw> = [
               title: "二级菜单2",
             },
             children: [
-              {
-                path: "meun3-2",
-                name: "meun3-2",
-                meta: {
-                  title: "三级菜单2",
-                },
-                component: () => import("@/pages/home/test.vue"),
-              }
+              // {
+              //   path: "meun3-2",
+              //   name: "meun3-2",
+              //   meta: {
+              //     title: "三级菜单2",
+              //   },
+              //   component: () => import("@/pages/home/test.vue"),
+              // }
             ]
           },
         ],

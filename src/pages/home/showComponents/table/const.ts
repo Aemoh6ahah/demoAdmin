@@ -28,9 +28,4 @@ export const columns = [
       },
     ],
   },
-  {
-    label: "开关",
-    prop: "state",
-    customSolt: "stateSwitch",
-  },
 ];

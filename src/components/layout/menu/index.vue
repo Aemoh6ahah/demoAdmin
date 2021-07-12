@@ -6,10 +6,10 @@
       :default-active="$route.name"
       class="el-menu-vertical-demo"
       :collapse="isCollapse"
-      background-color="#545c64"
-      text-color="#fff"
+      background-color="#232a36"
+      text-color="#888"
       @select="selectMeun"
-      active-text-color="#46faf6"
+      active-text-color="#fff"
     >
       <div class="coll-btn">
         <el-button type="text" class="icon" @click="handleCollapse">
@@ -56,7 +56,6 @@ export default defineComponent({
   methods: {
     selectMeun(index: string, path: string) {
       this.$router.push({ name: index });
-      console.log(path);
     },
     handleCollapse() {
       this.isCollapse = !this.isCollapse;
@@ -73,7 +72,7 @@ export default defineComponent({
   top: 0;
   width: 200px;
   height: 100%;
-  background-color: #545c64;
+  background-color: #232a36;
   .logo {
     height: 61px;
     background-color: #fafafa;

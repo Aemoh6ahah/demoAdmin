@@ -11,7 +11,6 @@ export const METHOD: { [key: string]: string } = {
 };
 
 export async function request(url: string, method: string, params?: any, responseType?: any): Promise<any> {
-  // console.log(url, method, params,responseType)
   switch (method) {
     case METHOD.GET:
       return axios({ method: "get", url: url, params: params, responseType: responseType })
