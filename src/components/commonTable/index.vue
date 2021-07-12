@@ -16,6 +16,8 @@
             :is="column.customSolt"
             :scope="scope"
             v-bind="{ ...column, SSConfig }"
+            @refresh="refresh(false)"
+            @changeState="changeState"
           ></component>
         </template>
       </el-table-column>
@@ -108,6 +110,40 @@ export default defineComponent({
         ...this.pagination,
       });
       this.sourceData = data;
+    },
+
+    refresh(isReset = false) {
+      if (isReset) {
+        this.pagination = { pageSize: 10, currentPage: 1 };
+        this.localLoadData();
+      }
+      {
+        this.localLoadData();
+      }
+    },
+
+    changeState(v, scope) {
+      this.$ElMessageBox
+        .confirm(
+          `${v ? this.SSConfig.onlineText : this.SSConfig.offlineText}`,
+          "提示",
+          {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning",
+          }
+        )
+        .then(async () => {
+          await this.SSConfig.interface(
+            scope.row[this.SSConfig.key],
+            Number(!scope.row.state)
+          );
+          this.refresh(false);
+          this.$ElMessage({
+            type: "success",
+            message: "操作成功!",
+          });
+        });
     },
   },
 });

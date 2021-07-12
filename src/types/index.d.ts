@@ -1,4 +1,4 @@
-interface SSCONFIG {
+type SSCONFIG = {
   key: string;
   interface: Function;
   onlineText: string;

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-switch></el-switch>
+    <el-switch v-model="compVal"></el-switch>
   </div>
 </template>
 <script lang="ts">
@@ -9,7 +9,7 @@ import { computed, defineComponent, PropType } from "vue";
 export default defineComponent({
   props: {
     SSConfig: {
-      type: Object as PropType<SSCONFIG>,
+      type: Object,
       required: true,
     },
     scope: {
@@ -18,19 +18,16 @@ export default defineComponent({
   },
   computed: {},
 
-  setup(props) {
+  setup(props, context) {
     const compVal = computed({
       get() {
-        return props.scope.row.state;
+        return Boolean(props.scope.row.state);
       },
-      async set() {
-        // await props.SSConfig.interface(
-        //   props.scope.row[props.SSConfig.key],
-        //   Number(!props.scope.row.state)
-        // );
+      async set(v) {
+        context.emit("changeState", v, props.scope);
       },
     });
-    return {};
+    return { compVal };
   },
 });
 </script>

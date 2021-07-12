@@ -3,7 +3,7 @@
     <card-header :name="'列表页'">
       <template #operate-btns>
         <el-button size="small" type="primary">查询</el-button>
-        <el-button size="small">重置</el-button>
+        <el-button size="small" @click="reset">重置</el-button>
       </template>
       <template #filters>
         <div class="form_wapper">
@@ -20,6 +20,7 @@
       </template>
     </card-header>
     <custom-table
+      ref="table"
       :columns="tableColumns"
       :loadData="loadData"
       :queryParams="{}"
@@ -67,6 +68,12 @@ export default defineComponent({
             date: "2020-12-25",
             id: i + (currentPage - 1) * pageSize,
             state: Number(Math.random() > 0.5),
+            avatar:
+              "https://img1.baidu.com/it/u=1475467902,96195076&fm=26&fmt=auto&gp=0.jpg",
+            coverUrl:
+              "https://img1.baidu.com/it/u=1475467902,96195076&fm=26&fmt=auto&gp=0.jpg",
+            content:
+              "https://img1.baidu.com/it/u=1475467902,96195076&fm=26&fmt=auto&gp=0.jpg",
           });
         }
         res({
@@ -79,7 +86,9 @@ export default defineComponent({
 
     search() {},
 
-    reset() {},
+    reset() {
+      this.$refs.table.refresh(true);
+    },
   },
 });
 </script>
