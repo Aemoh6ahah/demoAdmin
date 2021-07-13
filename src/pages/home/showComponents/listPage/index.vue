@@ -27,6 +27,7 @@
       :SSConfig="SSConfig"
       @search="search"
       @reset="reset"
+      :stateConfig="stateConfig"
     ></custom-table>
   </div>
 </template>
@@ -51,11 +52,36 @@ export default defineComponent({
       interface: () => {},
       onlineText: "是否上线",
       offlineText: "是否下线",
+      onlineState: 1,
+      offlineState: 0,
     });
+    const stateConfig = reactive<STATECONFIG[]>([
+      {
+        label: "上线中",
+        stateCode: 1,
+        color: "#52C41A",
+      },
+      {
+        label: "已下线",
+        stateCode: 0,
+        color: "#C5CCD7",
+      },
+      {
+        label: "待发布",
+        stateCode: 2,
+        color: "#ff8000",
+      },
+      {
+        label: "已删除",
+        stateCode: 3,
+        color: "#C5CCD7",
+      },
+    ]);
     return {
       tableColumns,
       SSConfig,
       context,
+      stateConfig,
     };
   },
   methods: {
@@ -65,9 +91,9 @@ export default defineComponent({
         let data = [];
         for (let i = 0; i < pageSize; i++) {
           data.push({
-            date: "2020-12-25",
+            date: "2019-12-25 00:00 ~ 2020-12-25 00:00",
             id: i + (currentPage - 1) * pageSize,
-            state: Number(Math.random() > 0.5),
+            state: Number(Math.round(Math.random() * 3)),
             avatar:
               "https://img1.baidu.com/it/u=1475467902,96195076&fm=26&fmt=auto&gp=0.jpg",
             coverUrl:
@@ -76,9 +102,11 @@ export default defineComponent({
               "https://img1.baidu.com/it/u=1475467902,96195076&fm=26&fmt=auto&gp=0.jpg",
           });
         }
-        res({
-          data,
-        });
+        setTimeout(() => {
+          res({
+            data,
+          });
+        }, 500);
       });
     },
 

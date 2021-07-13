@@ -5,6 +5,7 @@
       border
       header-row-class-name="commontable-header"
       height="562"
+      v-loading="loading"
     >
       <el-table-column
         v-for="(column, index) in columns"
@@ -15,7 +16,7 @@
           <component
             :is="column.customSolt"
             :scope="scope"
-            v-bind="{ ...column, SSConfig }"
+            v-bind="{ ...column, SSConfig, stateConfig }"
             @refresh="refresh(false)"
             @changeState="changeState"
           ></component>
@@ -39,12 +40,15 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, reactive, PropType } from "vue";
+import { defineComponent, ref, reactive, Ref, PropType } from "vue";
 import State from "./components/state.vue";
 import StateSwitch from "./components/stateSwitch.vue";
 
 /**
- * @param columns.customSolt
+ * @param columns.customSolt 列表项配置
+ * @param loadData  加载表格数据的方法
+ * @param queryParams 查询参数
+ * @pageSizes 每页条数
  * cover:
  */
 export default defineComponent({
@@ -76,16 +80,25 @@ export default defineComponent({
       type: Object as PropType<SSCONFIG>,
       required: true,
     },
+    stateConfig: {
+      type: Array as PropType<STATECONFIG[]>,
+      required: false,
+    },
   },
 
   components: { State, StateSwitch },
 
   setup() {
-    const sourceData = ref([]);
-    const pagination = reactive({ pageSize: 10, currentPage: 1 });
+    const sourceData: Ref<any[]> = ref([]);
+    const pagination: {
+      pageSize: number;
+      currentPage: number;
+    } = reactive({ pageSize: 10, currentPage: 1 });
+    const loading: Ref<boolean> = ref(false);
     return {
       sourceData,
       pagination,
+      loading,
     };
   },
 
@@ -105,11 +118,13 @@ export default defineComponent({
     },
 
     async localLoadData() {
+      this.loading = true;
       const { data } = await this.loadData({
         ...this.queryParams,
         ...this.pagination,
       });
       this.sourceData = data;
+      this.loading = false;
     },
 
     refresh(isReset = false) {
@@ -122,7 +137,8 @@ export default defineComponent({
       }
     },
 
-    changeState(v, scope) {
+    changeState(v: boolean, scope: { [name: string]: any }, targetVal: number) {
+      // 操作开关
       this.$ElMessageBox
         .confirm(
           `${v ? this.SSConfig.onlineText : this.SSConfig.offlineText}`,
@@ -136,8 +152,9 @@ export default defineComponent({
         .then(async () => {
           await this.SSConfig.interface(
             scope.row[this.SSConfig.key],
-            Number(!scope.row.state)
+            targetVal
           );
+          console.log(targetVal);
           this.refresh(false);
           this.$ElMessage({
             type: "success",

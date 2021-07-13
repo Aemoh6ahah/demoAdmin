@@ -21,10 +21,19 @@ export default defineComponent({
   setup(props, context) {
     const compVal = computed({
       get() {
-        return Boolean(props.scope.row.state);
+        return props.SSConfig.onlineState
+          ? props.scope.row.state === props.SSConfig.onlineState
+          : Boolean(props.scope.row.state);
       },
-      async set(v) {
-        context.emit("changeState", v, props.scope);
+      async set(v: boolean) {
+        const targetVal = v
+          ? props.SSConfig.onlineState
+            ? props.SSConfig.onlineState
+            : 1
+          : props.SSConfig.offlineState
+          ? props.SSConfig.offlineState
+          : 1;
+        context.emit("changeState", v, props.scope, targetVal);
       },
     });
     return { compVal };

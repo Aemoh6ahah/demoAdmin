@@ -12,15 +12,14 @@
  * @params state
  * 接收的状态码
  */
-import { defineComponent } from "vue";
-import { config } from "./const";
+import { defineComponent, PropType } from "vue";
 
 export default defineComponent({
   name: "state",
   props: {
-    config: {
-      type: Array,
-      default: (): config[] => {
+    stateConfig: {
+      type: Array as PropType<STATECONFIG[]>,
+      default: (): STATECONFIG[] => {
         return [
           {
             label: "上线中",
@@ -48,7 +47,7 @@ export default defineComponent({
   computed: {
     renderConfig() {
       return (
-        this.config.find((_: config) => {
+        this.stateConfig.find((_: STATECONFIG) => {
           return _.stateCode == this.scope.row.state;
         }) || {}
       );

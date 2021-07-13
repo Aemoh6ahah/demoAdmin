@@ -16,6 +16,5 @@ export default async function index(app) {
       app.config.globalProperties[`$${key}`] = toolModule.default[key]
     }
     console.log(app.config.globalProperties);
-
   });
 }
