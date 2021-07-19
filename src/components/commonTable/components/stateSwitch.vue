@@ -19,10 +19,13 @@ export default defineComponent({
   computed: {},
 
   setup(props, context) {
+    function isOnline(value: number) {
+      return props.SSConfig.onlineStates.indexOf(value) != -1;
+    }
     const compVal = computed({
       get() {
-        return props.SSConfig.onlineState
-          ? props.scope.row.state === props.SSConfig.onlineState
+        return props.SSConfig.onlineStates
+          ? isOnline(props.scope.row.state)
           : Boolean(props.scope.row.state);
       },
       async set(v: boolean) {
