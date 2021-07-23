@@ -20,7 +20,8 @@
 </template>
 <script lang="ts">
 import { defineComponent, ref, reactive, toRef } from "vue";
-import routes from "@/router/routes/index";
+// 从concat获取全部的路由
+import routes from "@/router/concat";
 
 export default defineComponent({
   name: "layout-header",
@@ -46,6 +47,10 @@ export default defineComponent({
     defaultActive() {
       return this.$route.fullPath.split("/")[1];
     },
+  },
+
+  created() {
+    console.log(this.routeMap[0].children);
   },
 });
 </script>

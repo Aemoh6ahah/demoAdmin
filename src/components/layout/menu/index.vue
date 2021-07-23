@@ -36,7 +36,7 @@
 </template>
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import routes from "@/router/routes/index";
+import routes from "@/router/concat";
 
 export default defineComponent({
   name: "meun",
