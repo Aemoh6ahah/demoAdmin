@@ -8,10 +8,6 @@ export const columns = [
     prop: "id",
   },
   {
-    label: "uid",
-    prop: "uid",
-  },
-  {
     label: "日期",
     prop: "date",
   },

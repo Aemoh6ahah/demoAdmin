@@ -47,5 +47,8 @@ export default defineComponent({
     padding: 0px;
     border-bottom: 0;
   }
+  /deep/&__body {
+    padding: 20px 0;
+  }
 }
 </style>

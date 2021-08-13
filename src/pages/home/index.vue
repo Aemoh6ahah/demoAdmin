@@ -47,8 +47,6 @@ export default defineComponent({
   },
   methods: {
     loadData(query): Promise<any> {
-      //
-
       return new Promise((res) => {
         let data = [];
         for (let i = 0; i < 10; i++) {

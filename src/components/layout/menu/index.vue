@@ -1,6 +1,6 @@
 <template>
   <div class="menu" :class="isCollapse ? 'collapse' : ''">
-    <div class="logo"></div>
+    <div class="logo">没有logo</div>
     <el-menu
       :uniqueOpened="true"
       :default-active="$route.name"
@@ -76,6 +76,8 @@ export default defineComponent({
   .logo {
     height: 61px;
     background-color: #fafafa;
+    text-align: center;
+    line-height: 61px;
   }
 }
 .el-menu {

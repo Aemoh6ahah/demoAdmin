@@ -13,3 +13,12 @@ export async function userLogin(data: { [key: string]: any }): Promise<any> {
 export async function testGet(q?: any): Promise<any> {
   return request(login.get, METHOD.GET, q);
 };
+
+export async function getPage(q?: any): Promise<any> {
+  return request('https://www.yjwujian.cn/news/index.html', METHOD.GET, q);
+};
+
+export async function getZhihu(q?: any): Promise<any> {
+  return request('api/zhihu', METHOD.GET, q);
+};
+//

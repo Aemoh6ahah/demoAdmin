@@ -11,6 +11,26 @@ const routes: Array<RouteRecordRaw> = [
     },
     children: [
       {
+        path: "entertainment",
+        name: "entertainment",
+        redirect: { name: "toplist" },
+        component: RouterView,
+        meta: {
+          title: "娱乐",
+          icon: "el-icon-house",
+        },
+        children: [
+          {
+            path: "toplist",
+            name: "toplist",
+            meta: {
+              title: "今日热门",
+            },
+            component: () => import("@/pages/home/entertainment/toplist/index.vue"),
+          },
+        ]
+      },
+      {
         path: "componentsManagement",
         name: "componentsManagement",
         redirect: { name: "table" },
@@ -32,7 +52,7 @@ const routes: Array<RouteRecordRaw> = [
             path: "listPage",
             name: "listPage",
             meta: {
-              title: "表格页面",
+              title: "列表页",
             },
             component: () => import("@/pages/home/showComponents/listPage/index.vue"),
           }

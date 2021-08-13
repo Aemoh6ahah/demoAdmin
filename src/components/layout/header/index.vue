@@ -49,9 +49,7 @@ export default defineComponent({
     },
   },
 
-  created() {
-    console.log(this.routeMap[0].children);
-  },
+  created() {},
 });
 </script>
 <style lang="less" scoped>
@@ -59,6 +57,7 @@ export default defineComponent({
   height: 61px;
   padding-left: 200px;
   transition: 0.8s;
+  margin: -61px 0 0;
   .hor-menu {
   }
 }

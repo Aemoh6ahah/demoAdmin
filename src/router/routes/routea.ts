@@ -30,6 +30,26 @@ const routes: Array<RouteRecordRaw> = [
           }
         ]
       },
+      {
+        path: "game",
+        name: "game",
+        redirect: { name: "wuxia" },
+
+        component: RouterView,
+        meta: {
+          title: "game",
+        },
+        children: [
+          {
+            path: "wuxia",
+            name: "wuxia",
+            meta: {
+              title: "wuxia",
+            },
+            component: () => import("@/pages/somethingFun/game/wuxia/index.vue"),
+          }
+        ]
+      },
     ],
   },
 ];

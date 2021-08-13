@@ -55,8 +55,9 @@ export default defineComponent({
   position: relative;
   width: 100%;
   height: 100%;
+  padding-top: 61px;
   .content {
-    height: 80%;
+    height: 100%;
     padding-left: 200px;
     transition: 0.8s;
     background: #f4f6fa;

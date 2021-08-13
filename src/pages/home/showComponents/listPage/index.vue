@@ -7,12 +7,14 @@
       </template>
       <template #filters>
         <div class="form_wapper">
-          <el-form size="small">
-            <el-form-item
-              label="活动名称"
-              label-width="80px"
-              style="max-width: 446px"
-            >
+          <el-form size="small" class="filter-form">
+            <el-form-item label="搜索框1">
+              <el-input style="width: 240px" size="small"></el-input>
+            </el-form-item>
+            <el-form-item label="搜索框2">
+              <el-input style="width: 240px" size="small"></el-input>
+            </el-form-item>
+            <el-form-item label="搜索框3">
               <el-input style="width: 240px" size="small"></el-input>
             </el-form-item>
           </el-form>
