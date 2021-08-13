@@ -19,7 +19,7 @@
 </template>
 <script lang="ts">
 import { defineComponent, ref, reactive } from "vue";
-import { getZhihu } from "@/services/index";
+import { getZhihu, getWeibo } from "@/services/index";
 import TopCard from "@/pages/home/entertainment/toplist/component/topCard0.vue";
 
 export default defineComponent({
@@ -35,6 +35,8 @@ export default defineComponent({
   },
   async mounted() {
     const { data } = await getZhihu();
+    const weibo = await getWeibo();
+    console.log(weibo.data);
     let list = data.data.map((_, index) => {
       return {
         title: _.target.title,
@@ -47,7 +49,6 @@ export default defineComponent({
       };
     });
     this.topList = list;
-    console.log(this.topList);
   },
 });
 </script>

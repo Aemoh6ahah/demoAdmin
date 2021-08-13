@@ -38,7 +38,6 @@ export default defineComponent({
   },
   setup(props) {
     // let cardInfo = reactive(props.cardInfo);
-    console.log(props);
     return {};
   },
   methods: {
