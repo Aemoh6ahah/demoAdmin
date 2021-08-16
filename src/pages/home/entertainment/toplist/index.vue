@@ -11,19 +11,27 @@
             ></top-card>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="微博" name="second">微博</el-tab-pane>
-        <el-tab-pane label="百度" name="fourth">百度</el-tab-pane>
+        <el-tab-pane label="微博" name="second">
+          <top-card1
+            v-for="(info, index) in weiboTopList"
+            :key="index"
+            :cardInfo="info"
+          ></top-card1>
+        </el-tab-pane>
+        <el-tab-pane label="百度" name="fourth">施工中</el-tab-pane>
       </el-tabs>
     </el-card>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, reactive } from "vue";
+import { defineComponent, ref, reactive, onMounted } from "vue";
 import { getZhihu, getWeibo } from "@/services/index";
 import TopCard from "@/pages/home/entertainment/toplist/component/topCard0.vue";
+import TopCard1 from "@/pages/home/entertainment/toplist/component/topCard1.vue";
+import { getWeiboTop } from "@/utils/util";
 
 export default defineComponent({
-  components: { TopCard },
+  components: { TopCard, TopCard1 },
   setup() {
     const activeName = ref("zhihu");
     function handleClick(e: any) {
@@ -31,12 +39,20 @@ export default defineComponent({
     }
     // 热榜list
     const topList = ref([]);
-    return { activeName, handleClick, topList };
+
+    // 微博业务
+    let weiboTopList = ref([]);
+
+    async function getweiboList() {
+      const weibo = await getWeibo();
+      weiboTopList.value = getWeiboTop(String(weibo.data));
+    }
+    // onMounted
+    return { activeName, handleClick, topList, getweiboList, weiboTopList };
   },
   async mounted() {
     const { data } = await getZhihu();
-    const weibo = await getWeibo();
-    console.log(weibo.data);
+    this.getweiboList();
     let list = data.data.map((_, index) => {
       return {
         title: _.target.title,

@@ -42,3 +42,34 @@ export function arrayToTree(items) {
   }
   return result;
 }
+
+export function getWeiboTop(params: string) {
+  // /<p(([\s\S])*?)<\/p>/g.test('<p>123</p>');
+  let s = params.match(/<section(([\s\S])*?)<\/section>/g)
+  let node = document.createElement('div')
+  node.innerHTML = s[0]
+  const fragment = document.createDocumentFragment();
+  fragment.appendChild(node)
+  let list = fragment.querySelectorAll('li');
+  console.log(list[1]);
+
+  let nodeList = []
+  list.forEach((_, index) => {
+    nodeList.push({
+      link: getLink(_),
+      title: getTitle(_),
+      index: index,
+    })
+  })
+  list = undefined
+  console.log(nodeList[1]);
+
+  return nodeList
+}
+function getLink(node: HTMLLIElement) {
+  const link = node.querySelector('a').href;
+  return link.split('/')[3]
+}
+function getTitle(node: HTMLLIElement) {
+  return node.querySelector('span').innerText
+}

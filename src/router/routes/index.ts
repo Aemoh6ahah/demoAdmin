@@ -4,7 +4,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "home",
     name: "home",
-    redirect: { name: "componentsManagement" },
+    redirect: { name: "entertainment" },
     component: RouterView,
     meta: {
       title: "首页",
@@ -15,9 +15,10 @@ const routes: Array<RouteRecordRaw> = [
         name: "entertainment",
         redirect: { name: "toplist" },
         component: RouterView,
+
         meta: {
           title: "娱乐",
-          icon: "el-icon-house",
+          icon: "el-icon-coffee-cup",
         },
         children: [
           {
