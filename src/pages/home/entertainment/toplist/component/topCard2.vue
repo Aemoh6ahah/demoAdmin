@@ -42,7 +42,7 @@ export default defineComponent({
   },
   methods: {
     toDetail() {
-      window.open(`${this.cardInfo.url}`);
+      window.open(`https://www.baidu.com/s?ie=UTF-8&wd=${this.cardInfo.title}`);
     },
   },
 });
