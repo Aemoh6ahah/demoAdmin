@@ -42,7 +42,7 @@ export default defineComponent({
   },
   methods: {
     toDetail() {
-      window.open(`https://www.zhihu.com/question/${this.cardInfo.id}`);
+      window.open(`${this.cardInfo.url}`);
     },
   },
 });

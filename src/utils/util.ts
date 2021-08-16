@@ -44,15 +44,12 @@ export function arrayToTree(items) {
 }
 
 export function getWeiboTop(params: string) {
-  // /<p(([\s\S])*?)<\/p>/g.test('<p>123</p>');
-  let s = params.match(/<section(([\s\S])*?)<\/section>/g)
-  let node = document.createElement('div')
+  let s = params.match(/<section(([\s\S])*?)<\/section>/g);
+  let node = document.createElement('div');
   node.innerHTML = s[0]
-  const fragment = document.createDocumentFragment();
+  let fragment = document.createDocumentFragment();
   fragment.appendChild(node)
   let list = fragment.querySelectorAll('li');
-  console.log(list[1]);
-
   let nodeList = []
   list.forEach((_, index) => {
     nodeList.push({
@@ -61,8 +58,6 @@ export function getWeiboTop(params: string) {
       index: index,
     })
   })
-  list = undefined
-  console.log(nodeList[1]);
 
   return nodeList
 }
@@ -72,4 +67,12 @@ function getLink(node: HTMLLIElement) {
 }
 function getTitle(node: HTMLLIElement) {
   return node.querySelector('span').innerText
+}
+
+export function getBaiduTop(params: any) {
+  let s = params.match(/<!--[\s\S]*?-->/)[0];
+  s = s.substring(0, s.length - 3);
+  s = s.slice(11);
+  let res = JSON.parse(s)
+  return res.cards[0].content
 }

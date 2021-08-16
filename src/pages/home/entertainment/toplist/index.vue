@@ -18,39 +18,74 @@
             :cardInfo="info"
           ></top-card1>
         </el-tab-pane>
-        <el-tab-pane label="百度" name="fourth">施工中</el-tab-pane>
+        <el-tab-pane label="百度" name="fourth">
+          <top-card2
+            v-for="(info, index) in baiduTopList"
+            :key="index"
+            :cardInfo="info"
+          ></top-card2>
+        </el-tab-pane>
       </el-tabs>
     </el-card>
   </div>
 </template>
 <script lang="ts">
 import { defineComponent, ref, reactive, onMounted } from "vue";
-import { getZhihu, getWeibo } from "@/services/index";
+import { getZhihu, getWeibo, getBaidu } from "@/services/index";
 import TopCard from "@/pages/home/entertainment/toplist/component/topCard0.vue";
 import TopCard1 from "@/pages/home/entertainment/toplist/component/topCard1.vue";
-import { getWeiboTop } from "@/utils/util";
+import TopCard2 from "@/pages/home/entertainment/toplist/component/topCard2.vue";
+import { getWeiboTop, getBaiduTop } from "@/utils/util";
 
 export default defineComponent({
-  components: { TopCard, TopCard1 },
+  components: { TopCard, TopCard1, TopCard2 },
   setup() {
     const activeName = ref("zhihu");
     function handleClick(e: any) {
       console.log(e);
     }
-    // 热榜list
+    // 知乎热榜list
     const topList = ref([]);
 
-    // 微博业务
+    // 微博
     let weiboTopList = ref([]);
 
     async function getweiboList() {
       const weibo = await getWeibo();
       weiboTopList.value = getWeiboTop(String(weibo.data));
     }
+
+    // 百度
+    let baiduTopList = ref([]);
+    async function getBaiduList() {
+      const baidu = await getBaidu();
+      let res = getBaiduTop(String(baidu.data));
+      console.log(res[0]);
+
+      baiduTopList.value = res.map((_, index) => {
+        return {
+          title: _.word,
+          coverUrl: _.img,
+          url: _.url,
+          content: _.desc,
+          hotVal: _.detail_text,
+          index: index + 1,
+        };
+      });
+    }
     // onMounted
-    return { activeName, handleClick, topList, getweiboList, weiboTopList };
+    return {
+      activeName,
+      handleClick,
+      topList,
+      getweiboList,
+      weiboTopList,
+      getBaiduList,
+      baiduTopList,
+    };
   },
   async mounted() {
+    this.getBaiduList();
     const { data } = await getZhihu();
     this.getweiboList();
     let list = data.data.map((_, index) => {

@@ -22,6 +22,10 @@ export async function getZhihu(q?: any): Promise<any> {
   return request('api/zhihu', METHOD.GET, q);
 };
 
+export async function getBaidu(q?: any): Promise<any> {
+  return request('api/baidu', METHOD.GET, q);
+};
+
 export async function getWeibo(q?: any): Promise<any> {
   return request('api/weibo', METHOD.GET, q);
 };

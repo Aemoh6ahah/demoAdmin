@@ -10,7 +10,6 @@ import CardHeader from '@/components/cardHeader/index.vue';
 import installTools from '@/project/install'
 const app = createApp(App).component('CardHeader', CardHeader);
 installTools(app);
-console.log(router);
 
 app.use(ElementPlus);
 app.use(store);
