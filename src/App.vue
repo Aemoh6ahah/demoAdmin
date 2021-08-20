@@ -7,9 +7,6 @@ export default defineComponent({
   setup() {
     return {};
   },
-  created() {
-    // console.log(this.$route);
-  },
 });
 </script>
 

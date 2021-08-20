@@ -1,6 +1,6 @@
 <template>
   <div class="menu" :class="isCollapse ? 'collapse' : ''">
-    <div class="logo">没有logo</div>
+    <div class="logo"></div>
     <el-menu
       :uniqueOpened="true"
       :default-active="$route.name"
@@ -20,6 +20,7 @@
       <el-submenu
         :index="i.name"
         v-for="i in renderMenuMap.children"
+        v-show="!i.meta.hidden"
         :key="i.name"
       >
         <template #title>
@@ -74,10 +75,17 @@ export default defineComponent({
   height: 100%;
   background-color: #232a36;
   .logo {
-    height: 61px;
-    background-color: #fafafa;
+    width: 176px;
+    background-image: url("../../../assets/img/logo.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    height: 37px;
+    background-color: #232a36;
     text-align: center;
     line-height: 61px;
+    margin: 12px;
+    box-sizing: border-box;
   }
 }
 .el-menu {

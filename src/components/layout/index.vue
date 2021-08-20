@@ -21,7 +21,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
 import LayoutHeader from "./header/index.vue";
 import Menu from "./menu/index.vue";
 
@@ -42,6 +42,12 @@ export default defineComponent({
       matched[matched.length - 1].disable = true;
       return matched;
     },
+  },
+  created() {
+    console.log(document.body.offsetWidth);
+  },
+  mounted() {
+    // console.log(document.body.offsetWidth);
   },
   methods: {
     collapseChange(isCollapse) {

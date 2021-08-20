@@ -38,6 +38,7 @@ const routes: Array<RouteRecordRaw> = [
         component: RouterView,
         meta: {
           title: "game",
+          hidden: true,
         },
         children: [
           {

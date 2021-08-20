@@ -66,7 +66,7 @@ function getLink(node: HTMLLIElement) {
   return link.split('/')[3]
 }
 function getTitle(node: HTMLLIElement) {
-  return node.querySelector('span').innerText
+  return node.querySelector('span').textContent
 }
 
 export function getBaiduTop(params: any) {

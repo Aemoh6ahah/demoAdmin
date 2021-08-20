@@ -29,6 +29,14 @@ const routes: Array<RouteRecordRaw> = [
             },
             component: () => import("@/pages/home/entertainment/toplist/index.vue"),
           },
+          {
+            path: "holiday",
+            name: "holiday",
+            meta: {
+              title: "什么时候放假",
+            },
+            component: () => import("@/pages/home/entertainment/holiday/index.vue"),
+          },
         ]
       },
       {
@@ -39,6 +47,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           title: "组件管理",
           icon: "el-icon-house",
+          hidden: true,
         },
         children: [
           {
