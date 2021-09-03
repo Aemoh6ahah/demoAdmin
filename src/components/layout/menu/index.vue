@@ -71,7 +71,7 @@ export default defineComponent({
   transition: 0.8s;
   left: 0;
   top: 0;
-  width: 200px;
+  width: 208px;
   height: 100%;
   background-color: #232a36;
   .logo {
@@ -91,6 +91,20 @@ export default defineComponent({
 .el-menu {
   border: none;
 }
+/deep/.el-submenu {
+  .el-menu-item.is-active {
+    background-color: #4662e6 !important;
+  }
+  &.is-active {
+    .el-submenu__title {
+      color: #fff !important;
+      i {
+        color: #fff !important;
+      }
+    }
+  }
+}
+
 .collapse {
   width: 66px;
 }

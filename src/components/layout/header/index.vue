@@ -8,6 +8,7 @@
       size="medium"
       mode="horizontal"
       @select="selectMeun"
+      v-show="false"
     >
       <el-menu-item
         v-for="i in routeMap[0].children"
@@ -58,6 +59,7 @@ export default defineComponent({
   padding-left: 200px;
   transition: 0.8s;
   margin: -61px 0 0;
+  background-color: #4662e6;
   .hor-menu {
   }
 }

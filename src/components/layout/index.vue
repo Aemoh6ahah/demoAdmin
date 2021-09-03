@@ -64,7 +64,7 @@ export default defineComponent({
   padding-top: 61px;
   .content {
     height: 100%;
-    padding-left: 200px;
+    padding-left: 208px;
     transition: 0.8s;
     background: #f4f6fa;
     overflow: auto;

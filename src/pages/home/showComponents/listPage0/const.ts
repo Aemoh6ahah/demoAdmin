@@ -15,6 +15,7 @@ export const columns = [
     label: "状态",
     prop: "state",
     customSolt: "state",
+    width: 80,
     config: [
       {
         label: "online",
@@ -27,5 +28,11 @@ export const columns = [
         color: "#C5CCD7",
       },
     ],
+  },
+  {
+    label: "开关",
+    width: 80,
+    prop: "state",
+    customSolt: "stateSwitch",
   },
 ];
