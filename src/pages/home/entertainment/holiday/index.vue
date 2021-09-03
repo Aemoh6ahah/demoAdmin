@@ -1,12 +1,13 @@
 <template>
   <div class="container" v-loading="pageLoading">
-    <el-card>
+    <el-card class="card">
       <div class="text">
         <!-- {{ todayText }} -->
         <div v-for="(t, i) in todayText" v-show="t" :key="i">{{ t }}！</div>
       </div>
       <div class="query">
         <el-date-picker
+          class="date"
           v-model="queryDay"
           format="YYYY-MM-DD"
           :value-format="'YYYY-MM-DD'"
@@ -122,6 +123,9 @@ export default defineComponent({
 });
 </script>
 <style lang="less" scoped>
+.card {
+  position: relative;
+}
 .text {
   font-size: 22px;
   font-weight: 600;
@@ -131,16 +135,25 @@ export default defineComponent({
 .query {
   display: flex;
   align-items: center;
+  position: absolute;
   margin-top: 24px;
+  left: 50%;
+  width: 302px;
+  transform: translateX(-50%);
   .btn {
     // margin-left: 12px;
     height: 40px;
-    border-radius: 20px;
+    transform: translateY(-1px);
+    border-radius: 0 20px 20px 0;
+  }
+  /deep/.el-input__inner {
+    box-sizing: border-box;
+    border-radius: 20px 0 0 20px;
   }
 }
 .res {
   min-height: 200px;
-  text-align: left;
-  padding-top: 12px;
+  text-align: center;
+  padding-top: 100px;
 }
 </style>
