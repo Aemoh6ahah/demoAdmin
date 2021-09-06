@@ -10,7 +10,6 @@
 <script lang="ts">
 // eslint-disable-file no-use-before-define
 import { ref, Ref, watch, reactive, defineComponent, onMounted } from "vue";
-import { userLogin, testGet } from "@/services/index";
 import CustomTable from "@/components/commonTable/index.vue";
 import { columns } from "./const";
 interface FormData {
@@ -25,13 +24,9 @@ export default defineComponent({
       account: "",
       psw: "",
     });
-    const submit = async () => {
-      await userLogin(formData);
-    };
+    const submit = async () => {};
 
-    const get = async () => {
-      await testGet();
-    };
+    const get = async () => {};
 
     const tableColumns = reactive(columns);
     const showId = ref();

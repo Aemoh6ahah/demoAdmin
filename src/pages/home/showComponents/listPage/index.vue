@@ -36,7 +36,6 @@
 <script lang="ts">
 // eslint-disable-file no-use-before-define
 import { ref, Ref, watch, reactive, defineComponent, onMounted } from "vue";
-import { userLogin, testGet } from "@/services/index";
 import CustomTable from "@/components/commonTable/index.vue";
 import { columns } from "./const";
 interface FormData {

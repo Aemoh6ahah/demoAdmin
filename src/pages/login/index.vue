@@ -9,7 +9,6 @@
 </template>
 <script lang="ts">
 import { ref, Ref, watch, reactive, defineComponent } from "vue";
-import { userLogin, testGet } from "@/services/index";
 interface FormData {
   account: string;
   psw: string;
@@ -21,12 +20,8 @@ export default defineComponent({
       account: "",
       psw: "",
     });
-    const submit = async () => {
-      await userLogin(formData);
-    };
-    const get = async () => {
-      await testGet();
-    };
+    const submit = async () => {};
+    const get = async () => {};
     return {
       submit,
       formData,
