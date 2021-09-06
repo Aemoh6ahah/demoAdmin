@@ -2,6 +2,7 @@
   <div class="commontable">
     <el-table
       :data="sourceData"
+      :stripe="true"
       border
       header-row-class-name="commontable-header"
       height="562"
@@ -12,14 +13,23 @@
         :key="index"
         v-bind="column"
       >
-        <template v-if="column.customSolt" #default="scope">
-          <component
-            :is="column.customSolt"
-            :scope="scope"
-            v-bind="{ ...column, SSConfig, stateConfig }"
-            @refresh="refresh(false)"
-            @changeState="changeState"
-          ></component>
+        <template
+          v-if="column.componentSolt || column.customSolt"
+          #default="scope"
+        >
+          <template v-if="column.componentSolt">
+            <component
+              :is="column.componentSolt"
+              :scope="scope"
+              v-bind="{ ...column, SSConfig, stateConfig, operations }"
+              @refresh="refresh(false)"
+              @changeState="changeState"
+            ></component>
+          </template>
+          <template v-if="column.customSolt">
+            <!-- {{ scope }} -->
+            <slot :name="column.customSolt" :row="scope.row"></slot>
+          </template>
         </template>
       </el-table-column>
     </el-table>
@@ -43,6 +53,7 @@
 import { defineComponent, ref, reactive, Ref, PropType } from "vue";
 import State from "./components/state.vue";
 import StateSwitch from "./components/stateSwitch.vue";
+import Operate from "./components/operate.vue";
 
 /**
  * @param columns.customSolt 列表项配置
@@ -84,9 +95,16 @@ export default defineComponent({
       type: Array as PropType<STATECONFIG[]>,
       required: false,
     },
+    operations: {
+      type: Array as PropType<OPERATION[]>,
+      required: false,
+      default: () => {
+        return [];
+      },
+    },
   },
 
-  components: { State, StateSwitch },
+  components: { State, StateSwitch, Operate },
 
   setup() {
     const sourceData: Ref<any[]> = ref([]);
@@ -114,6 +132,7 @@ export default defineComponent({
 
     sizeChange(size) {
       this.pagination.pageSize = size;
+
       this.localLoadData();
     },
 
@@ -180,11 +199,6 @@ export default defineComponent({
 /deep/.el-table {
   .el-table__header {
     height: 51px;
-  }
-  .commontable-header {
-    th {
-      background: #f4f6fa;
-    }
   }
   .el-table__row {
     height: 51px;

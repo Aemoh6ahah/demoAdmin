@@ -13,9 +13,15 @@ type SSCONFIG = {
 }
 
 // 状态配置
-type STATECONFIG =
-  {
-    label: string,
-    stateCode: number,
-    color: string,
-  }
+type STATECONFIG = {
+  label: string,
+  stateCode: number,
+  color: string,
+}
+
+// 菜单选项
+type OPERATION = {
+  label: string,
+  icon?: string,
+  cb: Function,
+}

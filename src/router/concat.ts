@@ -19,7 +19,7 @@ export default [
     path: "/",
     name: "",
     component: Layout,
-    redirect: { name: "home" },
+    redirect: { name: "mallManagement" },
     children: routes0
   }
 ];

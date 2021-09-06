@@ -19,7 +19,7 @@
       </div>
       <el-submenu
         :index="i.name"
-        v-for="i in renderMenuMap.children"
+        v-for="i in renderMenuMap"
         v-show="!i.meta.hidden"
         :key="i.name"
       >
@@ -48,12 +48,10 @@ export default defineComponent({
   },
   computed: {
     renderMenuMap() {
-      return this.routeMap[0].children.find((_) => {
-        let name = this.$route.fullPath.split("/")[1];
-        return name === _.path;
-      });
+      return this.routeMap[0].children;
     },
   },
+
   methods: {
     selectMeun(index: string, path: string) {
       this.$router.push({ name: index });

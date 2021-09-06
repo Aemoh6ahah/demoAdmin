@@ -1,21 +1,45 @@
 <template>
   <div class="container">
-    <card-header :name="'列表页'">
+    <card-header :name="'个性化匹配列表'">
       <template #operate-btns>
         <el-button size="small" type="primary">查询</el-button>
         <el-button size="small" @click="reset">重置</el-button>
       </template>
       <template #filters>
         <div class="form_wapper">
-          <el-form size="small" class="filter-form">
-            <el-form-item label="搜索框1">
-              <el-input style="width: 240px" size="small"></el-input>
+          <el-form size="small" class="filter-form" label-position="left">
+            <el-form-item label="适用车型">
+              <el-select
+                v-model="filterForm.carType"
+                multiple
+                placeholder="请选择"
+              >
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
             </el-form-item>
-            <el-form-item label="搜索框2">
-              <el-input style="width: 240px" size="small"></el-input>
+            <el-form-item label="创建时间">
+              <el-date-picker
+                v-model="filterForm.times"
+                type="datetimerange"
+                range-separator="-"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+              >
+              </el-date-picker>
             </el-form-item>
-            <el-form-item label="搜索框3">
-              <el-input style="width: 240px" size="small"></el-input>
+            <el-form-item label="URL地址">
+              <el-input
+                v-model="filterForm.url"
+                placeholder="请输入URL地址"
+                style="width: 1150px"
+                size="small"
+              ></el-input>
             </el-form-item>
           </el-form>
         </div>
@@ -26,11 +50,11 @@
       :columns="tableColumns"
       :loadData="loadData"
       :queryParams="{}"
-      :SSConfig="SSConfig"
       @search="search"
       @reset="reset"
-      :stateConfig="stateConfig"
-    ></custom-table>
+      :operations="operations"
+    >
+    </custom-table>
   </div>
 </template>
 <script lang="ts">
@@ -78,16 +102,37 @@ export default defineComponent({
         color: "#C5CCD7",
       },
     ]);
+
+    const filterForm = reactive({});
+    const queryForm = reactive({});
+
+    const operations = reactive([
+      {
+        label: "删除",
+        icon: "",
+        cb: (scope) => {
+          console.log(scope);
+        },
+      },
+    ]);
     return {
       tableColumns,
       SSConfig,
       context,
       stateConfig,
+      filterForm,
+      queryForm,
+      operations,
     };
   },
   methods: {
     loadData(query): Promise<any> {
       const { currentPage, pageSize } = query;
+      console.log({
+        ...query,
+        ...this.queryForm,
+      });
+
       return new Promise((res) => {
         let data = [];
         for (let i = 0; i < pageSize; i++) {

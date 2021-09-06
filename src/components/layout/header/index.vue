@@ -1,6 +1,6 @@
 <template>
   <div class="header" :class="isCollapse ? 'isCollapse' : ''">
-    <ElMenu
+    <!-- <ElMenu
       :default-active="defaultActive"
       class="hor-menu"
       background-color="#4662E6"
@@ -16,11 +16,11 @@
         :index="i.name"
         >{{ i.meta.title }}</el-menu-item
       >
-    </ElMenu>
+    </ElMenu> -->
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, reactive, toRef } from "vue";
+import { defineComponent, ref, reactive, toRef, onMounted } from "vue";
 // 从concat获取全部的路由
 import routes from "@/router/concat";
 
@@ -29,10 +29,9 @@ export default defineComponent({
   props: {
     isCollapse: Boolean,
   },
-  setup(props) {
-    // const routeMap = ref([...routes]);
-    // const { isCollapse } = toRefs(props);
+  setup(props, ctx) {
     const routeMap = reactive(routes);
+
     return {
       routeMap,
     };
