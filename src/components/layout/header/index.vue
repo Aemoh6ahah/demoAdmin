@@ -17,6 +17,17 @@
         >{{ i.meta.title }}</el-menu-item
       >
     </ElMenu> -->
+    <div class="coll-btn">
+      <el-button
+        type="text"
+        style="width: 84px"
+        class="icon"
+        @click="handleCollapse"
+      >
+        <i v-if="isCollapse" class="el-icon-s-fold"></i>
+        <i v-else class="el-icon-s-unfold"></i>
+      </el-button>
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -32,14 +43,20 @@ export default defineComponent({
   setup(props, ctx) {
     const routeMap = reactive(routes);
 
+    const isCollapse = ref(false);
     return {
       routeMap,
+      isCollapse,
     };
   },
 
   methods: {
     selectMeun(index: string, path: string) {
       this.$router.push({ name: index });
+    },
+    handleCollapse() {
+      this.isCollapse = !this.isCollapse;
+      this.$emit("collapse", this.isCollapse);
     },
   },
 
@@ -71,6 +88,20 @@ export default defineComponent({
 /deep/.el-menu-item {
   &:hover {
     color: #fff !important;
+  }
+}
+.coll-btn {
+  display: flex;
+  // flex-direction: row-reverse;
+  .icon {
+    font-size: 20px;
+    margin-right: 20px;
+  }
+  /deep/.el-button {
+    color: #fff;
+    &:hover {
+      color: #fff;
+    }
   }
 }
 </style>

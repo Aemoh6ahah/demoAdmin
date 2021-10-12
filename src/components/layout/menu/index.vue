@@ -1,6 +1,6 @@
 <template>
   <div class="menu" :class="isCollapse ? 'collapse' : ''">
-    <div class="logo"></div>
+    <div :class="isCollapse ? 'collapse logo' : 'logo'"></div>
     <el-menu
       :uniqueOpened="true"
       :default-active="$route.name"
@@ -11,12 +11,6 @@
       @select="selectMeun"
       active-text-color="#fff"
     >
-      <div class="coll-btn">
-        <el-button type="text" class="icon" @click="handleCollapse">
-          <i v-if="isCollapse" class="el-icon-s-fold"></i>
-          <i v-else class="el-icon-s-unfold"></i>
-        </el-button>
-      </div>
       <el-submenu
         :index="i.name"
         v-for="i in renderMenuMap"
@@ -44,6 +38,7 @@ export default defineComponent({
   setup() {
     const routeMap = ref(routes);
     const isCollapse = ref(false);
+
     return { routeMap, isCollapse };
   },
   computed: {
@@ -56,9 +51,8 @@ export default defineComponent({
     selectMeun(index: string, path: string) {
       this.$router.push({ name: index });
     },
-    handleCollapse() {
-      this.isCollapse = !this.isCollapse;
-      this.$emit("collapse", this.isCollapse);
+    handleCollapse(isCollapse) {
+      this.isCollapse = isCollapse;
     },
   },
 });
@@ -84,6 +78,11 @@ export default defineComponent({
     line-height: 61px;
     margin: 12px;
     box-sizing: border-box;
+    transition: 0.7s;
+    &.collapse {
+      width: 66px;
+      margin: 0;
+    }
   }
 }
 .el-menu {
@@ -110,13 +109,5 @@ export default defineComponent({
   display: flex;
   align-items: center;
   justify-content: flex-start;
-}
-.coll-btn {
-  display: flex;
-  flex-direction: row-reverse;
-  .icon {
-    font-size: 20px;
-    margin-right: 20px;
-  }
 }
 </style>

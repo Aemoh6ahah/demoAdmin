@@ -24,4 +24,5 @@ type OPERATION = {
   label: string,
   icon?: string,
   cb: Function,
+  disable?: any,
 }

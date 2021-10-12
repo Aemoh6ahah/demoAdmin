@@ -5,7 +5,7 @@
       :stripe="true"
       border
       header-row-class-name="commontable-header"
-      height="562"
+      height="604"
       v-loading="loading"
     >
       <el-table-column
@@ -20,14 +20,13 @@
           <template v-if="column.componentSolt">
             <component
               :is="column.componentSolt"
-              :scope="scope"
-              v-bind="{ ...column, SSConfig, stateConfig, operations }"
+              :scope="{ ...scope, _column: { ...column } }"
+              v-bind="computeAttr(column.componentSolt)"
               @refresh="refresh(false)"
               @changeState="changeState"
             ></component>
           </template>
           <template v-if="column.customSolt">
-            <!-- {{ scope }} -->
             <slot :name="column.customSolt" :row="scope.row"></slot>
           </template>
         </template>
@@ -35,15 +34,14 @@
     </el-table>
     <el-pagination
       class="pagination"
-      :hide-on-single-page="true"
       background
-      layout="sizes, prev, pager, next"
-      :total="1000"
+      layout=" prev, pager, next"
+      :total="pagination.total"
       :page-sizes="pageSizes"
       @size-change="sizeChange"
       size="small"
       :page-size="pagination.pageSize"
-      :current-page="pagination.currentPage"
+      :current-page="pagination.page"
       @current-change="currentChange"
     >
     </el-pagination>
@@ -54,6 +52,7 @@ import { defineComponent, ref, reactive, Ref, PropType } from "vue";
 import State from "./components/state.vue";
 import StateSwitch from "./components/stateSwitch.vue";
 import Operate from "./components/operate.vue";
+import LineText from "./components/lineText.vue";
 
 /**
  * @param columns.customSolt 列表项配置
@@ -89,11 +88,17 @@ export default defineComponent({
     },
     SSConfig: {
       type: Object as PropType<SSCONFIG>,
-      required: true,
+      required: false,
+      default: () => {
+        return {};
+      },
     },
     stateConfig: {
       type: Array as PropType<STATECONFIG[]>,
       required: false,
+      default: () => {
+        return [];
+      },
     },
     operations: {
       type: Array as PropType<OPERATION[]>,
@@ -104,14 +109,15 @@ export default defineComponent({
     },
   },
 
-  components: { State, StateSwitch, Operate },
+  components: { State, StateSwitch, Operate, LineText },
 
   setup() {
     const sourceData: Ref<any[]> = ref([]);
     const pagination: {
       pageSize: number;
-      currentPage: number;
-    } = reactive({ pageSize: 10, currentPage: 1 });
+      page: number;
+      total: number;
+    } = reactive({ pageSize: 10, page: 1, total: 0 });
     const loading: Ref<boolean> = ref(false);
     return {
       sourceData,
@@ -126,7 +132,7 @@ export default defineComponent({
 
   methods: {
     currentChange(current) {
-      this.pagination.currentPage = current;
+      this.pagination.page = current;
       this.localLoadData();
     },
 
@@ -141,17 +147,22 @@ export default defineComponent({
       const { data } = await this.loadData({
         ...this.queryParams,
         ...this.pagination,
+        pageNum: this.pagination.page,
+        page: undefined,
+        total: undefined,
+        count: true,
       });
-      this.sourceData = data;
+      this.sourceData = data.rows;
       this.loading = false;
+      this.pagination.page = data.pageNum;
+      this.pagination.total = data.total;
     },
 
     refresh(isReset = false) {
       if (isReset) {
-        this.pagination = { pageSize: 10, currentPage: 1 };
+        this.pagination = { pageSize: 10, page: 1, total: 0 };
         this.localLoadData();
-      }
-      {
+      } else {
         this.localLoadData();
       }
     },
@@ -173,13 +184,31 @@ export default defineComponent({
             scope.row[this.SSConfig.key],
             targetVal
           );
-          console.log(targetVal);
           this.refresh(false);
           this.$ElMessage({
             type: "success",
             message: "操作成功!",
           });
         });
+    },
+
+    computeAttr(key) {
+      //匹配所组件所需属性
+      let res = {};
+      switch (key) {
+        case "state":
+          res = { stateConfig: this.stateConfig };
+          break;
+        case "stateSwitch":
+          res = { SSConfig: this.SSConfig };
+          break;
+        case "operate":
+          res = { operations: this.operations };
+          break;
+        default:
+          break;
+      }
+      return res;
     },
   },
 });

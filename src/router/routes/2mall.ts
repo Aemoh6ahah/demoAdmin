@@ -4,7 +4,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "mallManagement",
     name: "mallManagement",
-    redirect: { name: "customConfig" },
+    redirect: { name: "mallCustomConfig" },
     component: RouterView,
     meta: {
       title: "商城管理",
@@ -12,22 +12,16 @@ const routes: Array<RouteRecordRaw> = [
     },
     children: [
       {
-        path: "customConfig",
-        name: "customConfig",
+        path: "mallCustomConfig",
+        name: "mallCustomConfig",
         meta: {
           title: "个性化管理",
         },
         component: () => import("@/pages/home/mallManagement/customConfig/index.vue"),
       },
-      {
-        path: "listPage0",
-        name: "listPage0",
-        meta: {
-          title: "列表页",
-        },
-        component: () => import("@/pages/home/mallManagement/listPage0/index.vue"),
-      }
+
     ]
   },
+
 ];
 export default routes;

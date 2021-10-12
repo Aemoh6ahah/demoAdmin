@@ -16,7 +16,7 @@ module.exports = {
     config
       .plugin('html')
       .tap(args => {
-        args[0].title = 'fish together'
+        args[0].title = '用户社区管理台'
         return args
       })
   }

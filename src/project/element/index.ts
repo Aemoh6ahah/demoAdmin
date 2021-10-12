@@ -1,3 +1,5 @@
 import { ElMessageBox } from 'element-plus';
 import { ElMessage } from 'element-plus';
-export default { ElMessageBox, ElMessage }
+
+import Modal from '@/components/confirm/index' //弹窗组件
+export default { ElMessageBox, ElMessage, Modal }

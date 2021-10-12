@@ -2,26 +2,24 @@ import { RouteRecordRaw, RouterView } from "vue-router";
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: "mallManagement",
-    name: "mallManagement",
+    path: "mineManagement",
+    name: "mineManagement",
     redirect: { name: "customConfig" },
     component: RouterView,
     meta: {
-      title: "商城管理",
-      icon: "el-icon-s-shop",
+      title: "我的管理",
+      icon: "el-icon-user-solid",
     },
     children: [
       {
-        path: "mallCustomConfig",
-        name: "mallCustomConfig",
+        path: "customConfig",
+        name: "customConfig",
         meta: {
           title: "个性化管理",
         },
-        component: () => import("@/pages/home/mallManagement/customConfig/index.vue"),
+        component: () => import("@/pages/home/mineManagement/customConfig/index.vue"),
       },
-
     ]
   },
-
 ];
 export default routes;

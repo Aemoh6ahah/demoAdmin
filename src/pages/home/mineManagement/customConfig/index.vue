@@ -62,14 +62,8 @@ export default defineComponent({
       let { entryName, entryUrl, entryId, entryLogo, sort } = e;
       try {
         await modifyEntry({
-          dto: {
-            entryName,
-            entryUrl,
-            entryId,
-            entryLogo,
-            sort,
-            entryEnable: Number(e.entryEnable),
-          },
+          entryId,
+          entryEnable: Number(e.entryEnable),
         });
       } catch (error) {}
     }

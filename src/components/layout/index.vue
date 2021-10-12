@@ -1,7 +1,7 @@
 <template>
   <div class="layoout">
-    <LayoutHeader :isCollapse="isCollapse" />
-    <div class="content" :class="isCollapse ? 'isCollapse' : ''">
+    <LayoutHeader @collapse="collapseChange" :isCollapse="isCollapse" />
+    <div :class="isCollapse ? 'isCollapse content' : 'content'">
       <el-breadcrumb
         separator-class="el-icon-arrow-right"
         style="margin: 0 0 0 24px"
@@ -17,7 +17,7 @@
       </el-breadcrumb>
       <router-view></router-view>
     </div>
-    <Menu @collapse="collapseChange"></Menu>
+    <Menu ref="menu"></Menu>
   </div>
 </template>
 <script lang="ts">
@@ -52,6 +52,7 @@ export default defineComponent({
   methods: {
     collapseChange(isCollapse) {
       this.isCollapse = isCollapse;
+      this.$refs.menu.handleCollapse(isCollapse);
     },
   },
 });
@@ -65,7 +66,7 @@ export default defineComponent({
   .content {
     height: 100%;
     padding-left: 208px;
-    transition: 0.8s;
+    transition: 0.1s;
     background: #f4f6fa;
     overflow: auto;
   }

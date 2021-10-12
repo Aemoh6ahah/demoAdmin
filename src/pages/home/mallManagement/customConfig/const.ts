@@ -6,17 +6,19 @@ export const columns = [
   },
   {
     label: "URL地址",
-    prop: "id",
+    prop: "url",
+    componentSolt: "lineText",
     align: 'center'
   },
   {
     label: "适用车型",
-    prop: "date",
-    align: 'center'
+    prop: "carModels",
+    align: 'center',
+    customSolt: 'carInfo'
   },
   {
     label: "创建时间",
-    prop: "date",
+    prop: "createTime",
     align: 'center'
   },
   {
