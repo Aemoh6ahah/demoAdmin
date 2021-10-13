@@ -2,67 +2,131 @@
   <div class="container">
     <card-header :name="'积分规则'">
       <template #operate-btns>
-        <el-button size="small" type="primary">编辑</el-button>
+        <el-button size="small" @click="switBtn" type="primary">{{
+          isModify ? "保存" : "编辑"
+        }}</el-button>
+        <el-button v-if="isModify" size="small" @click="cancel">取消</el-button>
       </template>
       <template #filters>
-        <div class="desc">
-          Consistency# 符合实际生活： 符合实际生活的过程和逻辑，
-          并符合用户使用的语言和习惯。 Consistent within interface: all elements
-          should be consistent, such as: design style, icons and texts, position
-          of elements, etc. Feedback# Operation feedback: enable the users to
-          clearly perceive their operations by style updates and interactive
-          effects. 视觉反馈： 通过更新或重新安排页面元素来反映当前状态。
-          Efficiency# Simplify the process: keep operating process simple and
-          intuitive. 明确而明确：
-          清楚地阐明你的意图，以便用户能够快速理解并做出决定。 易于识别：
-          接口应该直截了当，这有助于用户识别并使他们免于记忆和回忆。
-        </div>
-        <div>
+        <div class="desc" v-html="ruleDesc" v-if="!isModify"></div>
+        <div class="editor-wrap" v-else>
           <quill-editor
             v-model:value="state.content"
             :options="state.editorOption"
-            :disabled="state.disabled"
-          />
+          ></quill-editor>
         </div>
       </template>
     </card-header>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, reactive } from "vue";
 import { quillEditor } from "vue3-quill";
+import {
+  defineComponent,
+  reactive,
+  toRefs,
+  ref,
+  getCurrentInstance,
+} from "vue";
+import { getRuleDesc, modifyRuleDesc } from "@/services/interests";
+
 export default defineComponent({
-  components: { quillEditor },
+  components: {
+    quillEditor,
+  },
   setup() {
+    const { proxy } = getCurrentInstance();
+    let _this: any = proxy;
+
+    // 加载规则
+    let ruleDesc = ref("");
+    let lodeRule = async () => {
+      let { data } = await getRuleDesc({});
+      state.content = data.data;
+      ruleDesc.value = data.data;
+    };
+    lodeRule();
+
+    // 编辑器
     const state = reactive({
       dynamicComponent: null,
-      content: "<p>2333</p>",
-      _content: "",
+      content: "",
       editorOption: {
         placeholder: "core",
         modules: {
           toolbar: [
-            // custom toolbars options
-            // will override the default configuration
+            ["bold", "italic", "underline", "strike"],
+            ["blockquote", "code-block"],
+            [{ header: 1 }, { header: 2 }],
+            [{ list: "ordered" }, { list: "bullet" }],
+            // [{ script: "sub" }, { script: "super" }],
+            [{ indent: "-1" }, { indent: "+1" }],
+            [{ direction: "rtl" }],
+            [{ size: ["small", false, "large", "huge"] }],
+            [{ header: [1, 2, 3, 4, 5, 6, false] }],
+            [{ color: [] }, { background: [] }],
+            [{ font: [] }],
+            [{ align: [] }],
+            ["clean"],
           ],
-          // other moudle options here
         },
-        // more options
       },
       disabled: false,
     });
 
+    // 按钮业务
+    let isModify = ref(false);
+
+    let switBtn = async () => {
+      if (isModify.value) {
+        // 在编辑状态
+        console.log(state.content);
+        try {
+          await modifyRuleDesc({
+            desc: state.content,
+          });
+          _this.$ElMessage({
+            type: "success",
+            message: "操作成功!",
+          });
+          lodeRule();
+          isModify.value = !isModify.value;
+        } catch (error) {
+          _this.$ElMessage({
+            type: "error",
+            message: "操作失败!",
+          });
+        }
+      } else {
+        // 不在编辑状态
+        isModify.value = !isModify.value;
+      }
+    };
+    let cancel = () => {
+      isModify.value = false;
+    };
+
     return {
       state,
+      switBtn,
+      cancel,
+      isModify,
+      ruleDesc,
+      ...toRefs(state),
     };
   },
 });
 </script>
+
 
 <style lang="less" scoped>
 .desc {
   padding: 50px 30px;
   height: 60vh;
   font-size: 20px;
+}
+.editor-wrap {
+  height: 350px;
+  padding: 16px 50px 30px;
 }
 </style>

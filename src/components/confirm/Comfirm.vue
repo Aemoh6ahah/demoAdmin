@@ -19,12 +19,22 @@
       <div class="modal_button">
         <!-- 底部 -->
         <div v-if="footer">
-          <el-button size="small" @click.stop="HandleOk" type="primary">{{
-            okText
-          }}</el-button>
-          <el-button size="small" @click.stop="HandleCancel">{{
-            cancelText
-          }}</el-button>
+          <div
+            class="button primary"
+            size="small"
+            @click.stop="HandleOk"
+            type="primary"
+          >
+            {{ okText }}
+          </div>
+          <div
+            class="button"
+            size="small"
+            @click.stop="HandleCancel"
+            style="margin-left: 24px"
+          >
+            {{ cancelText }}
+          </div>
         </div>
         <!-- 插槽自定义组件 -->
         <slot v-else name="button" />
@@ -33,9 +43,9 @@
   </div>
 </template>
 <script>
-import { ElButton } from "element-plus";
+import "@/assets/style/theme/index.css";
+import "@/assets/style/element.less";
 export default {
-  components: { ElButton },
   data() {
     return {
       visible: false,
@@ -152,16 +162,55 @@ export default {
     }
   }
 }
-.el-button {
+.div {
   box-sizing: border-box;
   min-width: 82px;
   border-radius: 0;
 }
 
-.el-button--small {
+.div--small {
   border-radius: 0;
   font-size: 14px !important;
   height: 32px;
   padding: 8px 15px;
+}
+.button {
+  display: inline-block;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #dcdfe6;
+  color: #606266;
+  -webkit-appearance: none;
+  text-align: center;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  outline: 0;
+  margin: 0;
+  -webkit-transition: 0.1s;
+  transition: 0.1s;
+  font-weight: 500;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  border-radius: 0px;
+  width: 82px;
+  height: 32px;
+  padding: 9px 15px;
+  font-size: 12px;
+  border-radius: 0px;
+  &:hover {
+    border-color: rgb(107, 129, 235);
+    color: rgb(107, 129, 235);
+  }
+  &.primary {
+    color: #fff;
+    background: rgb(107, 129, 235);
+    border-color: rgb(107, 129, 235);
+    &:hover {
+      opacity: 0.8;
+    }
+  }
 }
 </style>

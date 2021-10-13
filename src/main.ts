@@ -17,6 +17,7 @@ installTools(app);
 
 app.use(ElementPlus, {
   locale: zhCn,
+  size: 'small',
 });
 app.use(store);
 app.use(router);
