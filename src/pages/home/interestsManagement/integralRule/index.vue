@@ -17,21 +17,48 @@
           清楚地阐明你的意图，以便用户能够快速理解并做出决定。 易于识别：
           接口应该直截了当，这有助于用户识别并使他们免于记忆和回忆。
         </div>
+        <div>
+          <quill-editor
+            v-model:value="state.content"
+            :options="state.editorOption"
+            :disabled="state.disabled"
+          />
+        </div>
       </template>
     </card-header>
-    <div></div>
   </div>
 </template>
-<script>
-export default {
-  components: {},
-  data() {
+<script lang="ts">
+import { defineComponent, reactive } from "vue";
+import { quillEditor } from "vue3-quill";
+export default defineComponent({
+  components: { quillEditor },
+  setup() {
+    const state = reactive({
+      dynamicComponent: null,
+      content: "<p>2333</p>",
+      _content: "",
+      editorOption: {
+        placeholder: "core",
+        modules: {
+          toolbar: [
+            // custom toolbars options
+            // will override the default configuration
+          ],
+          // other moudle options here
+        },
+        // more options
+      },
+      disabled: false,
+    });
+
     return {
-      content: "",
+      state,
     };
   },
-};
+});
 </script>
+
 <style lang="less" scoped>
 .desc {
   padding: 50px 30px;
