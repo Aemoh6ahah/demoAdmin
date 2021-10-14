@@ -1,4 +1,6 @@
 import axios from "axios";
+import interceptors from '@/utils/axios-interceptors'
+
 
 axios.defaults.timeout = 16000;
 
@@ -9,6 +11,11 @@ export const METHOD: { [key: string]: string } = {
   PUT: "put",
   DELETE: "delete",
 };
+
+axios.interceptors.response.use(
+  response => interceptors(response),
+  error => interceptors(error)
+)
 
 export async function request(url: string, method: string, params?: any, responseType?: any): Promise<any> {
   switch (method) {

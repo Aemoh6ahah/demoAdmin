@@ -48,7 +48,7 @@ export default defineComponent({
     async function getEntyList() {
       const { data } = await entyList({ pageSize: 20, page: 1 });
       console.log(data);
-      mineMenuList.value = data.data.rows.map((_) => {
+      mineMenuList.value = data.rows.map((_) => {
         return {
           ..._,
           entryEnable: Boolean(_.entryEnable),

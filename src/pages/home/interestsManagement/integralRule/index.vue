@@ -8,7 +8,7 @@
         <el-button v-if="isModify" size="small" @click="cancel">取消</el-button>
       </template>
       <template #filters>
-        <div class="desc" v-html="ruleDesc" v-if="!isModify"></div>
+        <div class="ql-editor desc" v-html="ruleDesc" v-if="!isModify"></div>
         <div class="editor-wrap" v-else>
           <quill-editor
             v-model:value="state.content"
@@ -42,8 +42,8 @@ export default defineComponent({
     let ruleDesc = ref("");
     let lodeRule = async () => {
       let { data } = await getRuleDesc({});
-      state.content = data.data;
-      ruleDesc.value = data.data;
+      state.content = data;
+      ruleDesc.value = data;
     };
     lodeRule();
 
@@ -123,7 +123,10 @@ export default defineComponent({
 .desc {
   padding: 50px 30px;
   height: 60vh;
-  font-size: 20px;
+}
+
+ul {
+  list-style: disc;
 }
 .editor-wrap {
   height: 350px;

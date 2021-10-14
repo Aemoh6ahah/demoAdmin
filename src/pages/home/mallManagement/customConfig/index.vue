@@ -26,7 +26,7 @@
             <el-form-item label="创建时间">
               <el-date-picker
                 style="width: 360px"
-                v-model="filterForm.times._time"
+                v-model="filterForm.times._Time"
                 type="datetimerange"
                 range-separator="-"
                 start-placeholder="开始日期"
@@ -34,7 +34,14 @@
               >
               </el-date-picker>
             </el-form-item>
-            <el-form-item label="URL地址">
+          </el-form>
+          <el-form
+            size="small"
+            class="filter-form"
+            label-position="left"
+            style="flex-grow: 1"
+          >
+            <el-form-item label="URL地址" label-width="90" style="flex-grow: 1">
               <el-input
                 v-model="filterForm.url"
                 placeholder="请输入URL地址"
@@ -195,12 +202,12 @@ export default defineComponent({
       id: "",
       startTime: "",
       url: "",
-      times: { _time: [] },
+      times: { _Time: [] },
     });
     const queryForm = reactive({
       carModelId: "",
-      endTime: "",
       id: "",
+      endTime: "",
       startTime: "",
       url: "",
     });
@@ -210,7 +217,7 @@ export default defineComponent({
     let avilableCarOptions = ref([]);
     const getAllCarOptions = async () => {
       const { data } = await getAllCars();
-      carTypeOptions.value = data.data.map((_) => {
+      carTypeOptions.value = data.map((_) => {
         return {
           ..._,
           id: "",
@@ -220,7 +227,7 @@ export default defineComponent({
 
     const getAvilableCarOptions = async () => {
       const { data } = await getAvilableCars();
-      avilableCarOptions.value = data.data;
+      avilableCarOptions.value = data;
     };
     getAvilableCarOptions();
 
@@ -426,7 +433,7 @@ export default defineComponent({
       const { carModelId } = this.$formatQueryform(this.filterForm);
       this.queryForm = {
         ...this.$formatQueryform(this.filterForm),
-        carModelId: carModelId.join(""),
+        carModelId: carModelId && carModelId.join(""),
       };
       this.$refs.table.refresh(true);
     },
@@ -434,7 +441,7 @@ export default defineComponent({
     reset() {
       this.filterForm.carModelId = "";
       this.filterForm.url = "";
-      this.filterForm.times._time = [];
+      this.filterForm.times._Time = [];
 
       this.queryForm.carModelId = "";
       this.queryForm.url = "";

@@ -144,18 +144,22 @@ export default defineComponent({
 
     async localLoadData() {
       this.loading = true;
-      const { data } = await this.loadData({
-        ...this.queryParams,
-        ...this.pagination,
-        pageNum: this.pagination.page,
-        page: undefined,
-        total: undefined,
-        count: true,
-      });
-      this.sourceData = data.rows;
-      this.loading = false;
-      this.pagination.page = data.pageNum;
-      this.pagination.total = data.total;
+      try {
+        const data = await this.loadData({
+          ...this.queryParams,
+          ...this.pagination,
+          pageNum: this.pagination.page,
+          page: undefined,
+          total: undefined,
+          count: true,
+        });
+        this.sourceData = data.rows;
+        this.loading = false;
+        this.pagination.page = data.pageNum;
+        this.pagination.total = data.total;
+      } catch (error) {
+        this.loading = false;
+      }
     },
 
     refresh(isReset = false) {
