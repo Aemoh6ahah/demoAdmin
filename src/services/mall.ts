@@ -8,7 +8,8 @@ const mall = {
   modifyMallUrl: `${URL.BASE_URL}/manage/mall/url/modify`,
   delMallUrl: `${URL.BASE_URL}/manage/mall/url/remove/`,
   getAllCars: `${URL.BASE_URL}/manage/car/model/tree`,
-  getAvilableCars: `${URL.BASE_URL}/manage/car/model/list/avilable`
+  getAvilableCars: `${URL.BASE_URL}/manage/car/model/list/avilable`,
+  fetchCarInfo: `${URL.BASE_URL}/manage/car/model/synchronize`,
 }
 
 
@@ -34,4 +35,7 @@ export async function getAllCars(query?: any) {
 
 export async function getAvilableCars(query?: any) {
   return request(mall.getAvilableCars, METHOD.GET, query);
+}
+export async function fetchCarInfo(query?: any) {
+  return request(mall.fetchCarInfo, METHOD.GET, query);
 }

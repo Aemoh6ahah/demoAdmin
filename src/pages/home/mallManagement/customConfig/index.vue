@@ -5,6 +5,9 @@
         <el-button size="small" @click="openDialog">添加</el-button>
         <el-button size="small" @click="search" type="primary">查询</el-button>
         <el-button size="small" @click="reset">重置</el-button>
+        <el-button size="small" @click="handelFetchCarInfo" type="primary"
+          >同步车型数据</el-button
+        >
       </template>
       <template #filters>
         <div class="form_wapper">
@@ -182,6 +185,7 @@ import {
   addMallUrl,
   delMallUrl,
   modifyMallUrl,
+  fetchCarInfo,
 } from "@/services/mall";
 interface FormData {
   account: string;
@@ -212,6 +216,9 @@ export default defineComponent({
       url: "",
     });
 
+    let handelFetchCarInfo = async () => {
+      await fetchCarInfo();
+    };
     // 所有车型 可用车型
     let carTypeOptions = ref([]);
     let avilableCarOptions = ref([]);
@@ -402,6 +409,7 @@ export default defineComponent({
       openEdit,
       afterClose,
       closeDetailDialog,
+      handelFetchCarInfo,
       tableColumns,
       queryForm,
       context,
