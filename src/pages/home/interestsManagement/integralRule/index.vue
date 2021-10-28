@@ -13,6 +13,9 @@
           <quill-editor
             v-model:value="state.content"
             :options="state.editorOption"
+            @change="getLength"
+            length="1000"
+            ref="quillEditor"
           ></quill-editor>
         </div>
       </template>
@@ -53,6 +56,7 @@ export default defineComponent({
       content: "",
       editorOption: {
         placeholder: "core",
+        maxLength: 10,
         modules: {
           toolbar: [
             ["bold", "italic", "underline", "strike"],
@@ -68,6 +72,7 @@ export default defineComponent({
             [{ font: [] }],
             [{ align: [] }],
             ["clean"],
+            ["image"],
           ],
         },
       },
@@ -114,6 +119,15 @@ export default defineComponent({
       ruleDesc,
       ...toRefs(state),
     };
+  },
+  methods: {
+    getLength(e) {
+      console.log(e.quill.deleteText);
+      if (e.text.length - 1 > 1000) {
+        console.log(this.state);
+        e.quill.deleteText(1000, 1, e.text.length);
+      }
+    },
   },
 });
 </script>

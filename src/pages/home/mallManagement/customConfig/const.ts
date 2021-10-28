@@ -1,6 +1,8 @@
 export const columns = [
   {
     type: "index",
+    width: 56,
+    label: "编号",
     prop: "",
     align: 'center'
   },

@@ -49,6 +49,7 @@ export default defineComponent({
   }
   /deep/&__body {
     padding: 20px 0;
+    padding-bottom: 0;
   }
 }
 </style>

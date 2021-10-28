@@ -5,7 +5,7 @@
       :stripe="true"
       border
       header-row-class-name="commontable-header"
-      height="604"
+      height="465"
       v-loading="loading"
     >
       <el-table-column
@@ -32,6 +32,13 @@
         </template>
       </el-table-column>
     </el-table>
+    <div class="footer-msg">
+      {{ footerLabel }}:
+      <span style="color: red">
+        {{ pagination.total }}
+      </span>
+      条
+    </div>
     <el-pagination
       class="pagination"
       background
@@ -59,6 +66,7 @@ import LineText from "./components/lineText.vue";
  * @param loadData  加载表格数据的方法
  * @param queryParams 查询参数
  * @pageSizes 每页条数
+ * @footerLabel 角标文案
  * cover:
  */
 export default defineComponent({
@@ -105,6 +113,13 @@ export default defineComponent({
       required: false,
       default: () => {
         return [];
+      },
+    },
+    footerLabel: {
+      type: String,
+      required: false,
+      default: () => {
+        return "数据";
       },
     },
   },
@@ -227,6 +242,17 @@ export default defineComponent({
   min-height: 500px;
   background: #fff;
   padding: 11px 10px;
+  position: relative;
+}
+.footer-msg {
+  position: absolute;
+  left: 10px;
+  bottom: 25px;
+  font-size: 14px;
+  font-family: SourceHanSansSC-Regular, SourceHanSansSC;
+  font-weight: 400;
+  color: #516076;
+  line-height: 14px;
 }
 
 /deep/.el-table {

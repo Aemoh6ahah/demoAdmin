@@ -21,5 +21,14 @@ export default [
     component: Layout,
     redirect: { name: "mallManagement" },
     children: routes0
+  },
+  {
+    path: "/404",
+    name: "notfound",
+    component: () => import("@/pages/home/404/404.vue"),
+  },
+  {
+    path: "/:catchAll(.*)",
+    redirect: { name: "notfound" },
   }
 ];

@@ -5,7 +5,11 @@
         <el-button size="small" @click="openDialog">添加</el-button>
         <el-button size="small" @click="search" type="primary">查询</el-button>
         <el-button size="small" @click="reset">重置</el-button>
-        <el-button size="small" @click="handelFetchCarInfo" type="primary"
+        <el-button
+          size="small"
+          @click="handelFetchCarInfo"
+          v-loading="carDataLoading"
+          type="primary"
           >同步车型数据</el-button
         >
       </template>
@@ -64,6 +68,7 @@
       @search="search"
       @reset="reset"
       :operations="operations"
+      :footerLabel="'车型数据'"
     >
       <template #carInfo="scope">
         <div
@@ -79,7 +84,7 @@
     </custom-table>
     <!-- 添加 编辑弹窗 -->
     <el-dialog
-      top="30%"
+      top="30vh"
       v-model="formDialogVisible"
       :title="dialogTitle"
       width="898px"
@@ -93,9 +98,9 @@
         :rules="carFormRule"
         ref="carInfoForm"
       >
-        <el-form-item label="url" prop="url">
+        <el-form-item label="URL地址" prop="url">
           <el-input
-            placeholder="请输入url"
+            placeholder="请输入URL地址"
             v-model="carForm.url"
             size="small"
           ></el-input>
@@ -132,7 +137,7 @@
       v-model="detailDialogVisible"
       title="详情"
       width="620px"
-      top="30%"
+      top="30vh"
     >
       <div class="detail-item">
         <span class="label">创建时间：</span>
@@ -216,8 +221,11 @@ export default defineComponent({
       url: "",
     });
 
+    let carDataLoading = ref(false);
     let handelFetchCarInfo = async () => {
+      carDataLoading.value = true;
       await fetchCarInfo();
+      carDataLoading.value = false;
     };
     // 所有车型 可用车型
     let carTypeOptions = ref([]);
@@ -271,14 +279,14 @@ export default defineComponent({
       url: [
         {
           required: true,
-          message: "请输入url",
+          message: "URL不能为空",
           trigger: "blur",
         },
       ],
       modelCarIds: [
         {
           required: true,
-          message: "请选择车型",
+          message: "未选择车型，不能提交",
         },
       ],
     };
@@ -360,6 +368,7 @@ export default defineComponent({
           p.$Modal.comfirm({
             title: "删除",
             content: `删除之后，该匹配关系将从此列表消失您还要继续吗？？`,
+            okText: "继续",
             ok: async () => {
               try {
                 await delMallUrl(scope.row.id);
@@ -410,6 +419,7 @@ export default defineComponent({
       afterClose,
       closeDetailDialog,
       handelFetchCarInfo,
+      carDataLoading,
       tableColumns,
       queryForm,
       context,
