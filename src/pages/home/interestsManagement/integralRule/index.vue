@@ -14,7 +14,7 @@
             v-model:value="state.content"
             :options="state.editorOption"
             @change="getLength"
-            length="1000"
+            :length="10"
             ref="quillEditor"
           ></quill-editor>
         </div>
@@ -55,8 +55,7 @@ export default defineComponent({
       dynamicComponent: null,
       content: "",
       editorOption: {
-        placeholder: "core",
-        maxLength: 10,
+        placeholder: "请输入积分规则",
         modules: {
           toolbar: [
             ["bold", "italic", "underline", "strike"],
@@ -81,11 +80,18 @@ export default defineComponent({
 
     // 按钮业务
     let isModify = ref(false);
-
+    const textLength = ref(0);
     let switBtn = async () => {
       if (isModify.value) {
         // 在编辑状态
-        console.log(state.content);
+        console.log(textLength.value);
+        if (!textLength.value) {
+          _this.$ElMessage({
+            type: "error",
+            message: "积分规则不能为空!",
+          });
+          return;
+        }
         try {
           await modifyRuleDesc({
             desc: state.content,
@@ -109,6 +115,7 @@ export default defineComponent({
     };
     let cancel = () => {
       isModify.value = false;
+      lodeRule();
     };
 
     return {
@@ -118,11 +125,12 @@ export default defineComponent({
       isModify,
       ruleDesc,
       ...toRefs(state),
+      textLength,
     };
   },
   methods: {
     getLength(e) {
-      console.log(e.quill.deleteText);
+      this.textLength = e.text.length - 1;
       if (e.text.length - 1 > 1000) {
         console.log(this.state);
         e.quill.deleteText(1000, 1, e.text.length);
@@ -144,6 +152,6 @@ ul {
 }
 .editor-wrap {
   height: 350px;
-  padding: 16px 50px 30px;
+  padding: 16px 50px 90px;
 }
 </style>

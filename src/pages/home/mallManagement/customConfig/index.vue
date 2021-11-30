@@ -21,6 +21,7 @@
                 v-model="filterForm.carModelId"
                 style="width: 240px"
                 placeholder="请选择适用车型"
+                filterable
                 :show-all-levels="false"
                 :options="carTypeOptions"
                 :props="{
@@ -111,6 +112,7 @@
             style="width: 100%"
             placeholder="请选择适用车型"
             :show-all-levels="false"
+            filterable
             :options="carTypeOptions"
             :props="{
               expandTrigger: 'hover',
