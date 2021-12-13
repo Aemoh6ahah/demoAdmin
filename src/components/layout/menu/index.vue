@@ -27,9 +27,13 @@
           <i :class="i.meta.icon"></i><span>{{ i.meta.title }}</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item v-for="j in i.children" :key="j.name" :index="j.name">{{
-            j.meta.title
-          }}</el-menu-item>
+          <el-menu-item
+            v-for="j in i.children"
+            v-show="!j.meta.hidden"
+            :key="j.name"
+            :index="j.name"
+            >{{ j.meta.title }}</el-menu-item
+          >
         </el-menu-item-group>
       </el-submenu>
     </el-menu>

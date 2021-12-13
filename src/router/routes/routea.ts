@@ -38,7 +38,7 @@ const routes: Array<RouteRecordRaw> = [
         component: RouterView,
         meta: {
           title: "game",
-          hidden: true,
+
         },
         children: [
           {
@@ -46,8 +46,17 @@ const routes: Array<RouteRecordRaw> = [
             name: "wuxia",
             meta: {
               title: "wuxia",
+              hidden: true,
             },
             component: () => import("@/pages/somethingFun/game/wuxia/index.vue"),
+          },
+          {
+            path: "snake",
+            name: "snake",
+            meta: {
+              title: "贪吃蛇",
+            },
+            component: () => import("@/pages/somethingFun/game/snake/index.vue"),
           }
         ]
       },
