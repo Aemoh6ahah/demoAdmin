@@ -1,17 +1,10 @@
 <template>
   <div class="container">
-    <card-header :name="'个性化匹配列表'">
+    <card-header :name="'物品管理'">
       <template #operate-btns>
         <el-button size="small" @click="openDialog">添加</el-button>
         <el-button size="small" @click="search" type="primary">查询</el-button>
         <el-button size="small" @click="reset">重置</el-button>
-        <el-button
-          size="small"
-          @click="handelFetchCarInfo"
-          v-loading="carDataLoading"
-          type="primary"
-          >同步车型数据</el-button
-        >
       </template>
       <template #filters>
         <div class="form_wapper">
@@ -41,21 +34,6 @@
                 end-placeholder="结束日期"
               >
               </el-date-picker>
-            </el-form-item>
-          </el-form>
-          <el-form
-            size="small"
-            class="filter-form"
-            label-position="left"
-            style="flex-grow: 1"
-          >
-            <el-form-item label="URL地址" label-width="90" style="flex-grow: 1">
-              <el-input
-                v-model="filterForm.url"
-                placeholder="请输入URL地址"
-                style="max-width: 1150px; flex-basis: 100%"
-                size="small"
-              ></el-input>
             </el-form-item>
           </el-form>
         </div>

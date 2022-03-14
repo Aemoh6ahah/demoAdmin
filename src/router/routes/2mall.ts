@@ -7,7 +7,7 @@ const routes: Array<RouteRecordRaw> = [
     redirect: { name: "mallCustomConfig" },
     component: RouterView,
     meta: {
-      title: "商城管理",
+      title: "资源管理",
       icon: "el-icon-s-shop",
     },
     children: [
@@ -15,7 +15,7 @@ const routes: Array<RouteRecordRaw> = [
         path: "mallCustomConfig",
         name: "mallCustomConfig",
         meta: {
-          title: "个性化管理",
+          title: "物品管理",
         },
         component: () => import("@/pages/home/mallManagement/customConfig/index.vue"),
       },
