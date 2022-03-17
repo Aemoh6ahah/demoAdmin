@@ -46,7 +46,7 @@
       :total="pagination.total"
       :page-sizes="pageSizes"
       @size-change="sizeChange"
-      size="small"
+      size="default"
       :page-size="pagination.pageSize"
       :current-page="pagination.page"
       @current-change="currentChange"
@@ -97,16 +97,10 @@ export default defineComponent({
     SSConfig: {
       type: Object as PropType<SSCONFIG>,
       required: false,
-      default: () => {
-        return {};
-      },
     },
     stateConfig: {
       type: Array as PropType<STATECONFIG[]>,
       required: false,
-      default: () => {
-        return [];
-      },
     },
     operations: {
       type: Array as PropType<OPERATION[]>,

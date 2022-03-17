@@ -2,10 +2,12 @@
   <div class="container">
     <card-header :name="'积分规则'">
       <template #operate-btns>
-        <el-button size="small" @click="switBtn" type="primary">{{
+        <el-button size="default" @click="switBtn" type="primary">{{
           isModify ? "保存" : "编辑"
         }}</el-button>
-        <el-button v-if="isModify" size="small" @click="cancel">取消</el-button>
+        <el-button v-if="isModify" size="default" @click="cancel"
+          >取消</el-button
+        >
       </template>
       <template #filters>
         <div class="ql-editor desc" v-html="ruleDesc" v-if="!isModify"></div>

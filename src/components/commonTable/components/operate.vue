@@ -7,7 +7,7 @@
   >
     <span class="point">...</span>
     <template #dropdown>
-      <el-dropdown-menu>
+      <el-dropdown-menu size="small">
         <el-dropdown-item
           v-for="(i, index) in operations"
           :key="index"
@@ -16,8 +16,8 @@
         >
           <el-button
             @click="i.cb(scope)"
+            size="small"
             type="text"
-            size="mini"
             :disabled="i.disable && i.disable(scope)"
           >
             <span>{{ i.label }}</span>

@@ -8,8 +8,8 @@ type SSCONFIG = {
   interface: Function;
   onlineText: string;
   offlineText: string;
-  onlineState?: number,
-  offlineState?: number,
+  onlineState: number,
+  offlineState: number,
 }
 
 // 状态配置

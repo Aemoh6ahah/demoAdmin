@@ -2,11 +2,13 @@
   <div class="container">
     <card-header :name="'个性化匹配列表'">
       <template #operate-btns>
-        <el-button size="small" @click="openDialog">添加</el-button>
-        <el-button size="small" @click="search" type="primary">查询</el-button>
-        <el-button size="small" @click="reset">重置</el-button>
+        <el-button size="default" @click="openDialog">添加</el-button>
+        <el-button size="default" @click="search" type="primary"
+          >查询</el-button
+        >
+        <el-button size="default" @click="reset">重置</el-button>
         <el-button
-          size="small"
+          size="default"
           @click="handelFetchCarInfo"
           v-loading="carDataLoading"
           type="primary"
@@ -15,7 +17,7 @@
       </template>
       <template #filters>
         <div class="form_wapper">
-          <el-form size="small" class="filter-form" label-position="left">
+          <el-form class="filter-form" size="default" label-position="left">
             <el-form-item label="适用车型">
               <el-cascader
                 v-model="filterForm.carModelId"
@@ -33,6 +35,7 @@
             </el-form-item>
             <el-form-item label="创建时间">
               <el-date-picker
+                size="default"
                 style="width: 360px"
                 v-model="filterForm.times._Time"
                 type="datetimerange"
@@ -44,7 +47,7 @@
             </el-form-item>
           </el-form>
           <el-form
-            size="small"
+            size="default"
             class="filter-form"
             label-position="left"
             style="flex-grow: 1"
@@ -54,7 +57,7 @@
                 v-model="filterForm.url"
                 placeholder="请输入URL地址"
                 style="max-width: 1150px; flex-basis: 100%"
-                size="small"
+                size="default"
               ></el-input>
             </el-form-item>
           </el-form>
@@ -92,7 +95,7 @@
       @closed="afterClose"
     >
       <el-form
-        size="small"
+        size="default"
         class="dialog-form"
         label-position="left"
         :model="carForm"
@@ -103,7 +106,7 @@
           <el-input
             placeholder="请输入URL地址"
             v-model="carForm.url"
-            size="small"
+            size="default"
           ></el-input>
         </el-form-item>
         <el-form-item label="适用车型" prop="modelCarIds" ref="modelCar">
@@ -126,12 +129,12 @@
       <div style="margin-top: 41px">
         <el-button
           class="dialog-btn"
-          size="small"
+          size="default"
           @click="submitForm('carForm')"
           type="primary"
           >提交</el-button
         >
-        <el-button size="small" @click="closeDialog">取消</el-button>
+        <el-button size="default" @click="closeDialog">取消</el-button>
       </div>
     </el-dialog>
     <!-- 详情弹窗 -->
@@ -161,12 +164,12 @@
       <div style="margin-top: 41px">
         <el-button
           class="dialog-btn"
-          size="small"
+          size="default"
           @click="openEdit"
           type="primary"
           >编辑</el-button
         >
-        <el-button size="small" @click="closeDetailDialog">取消</el-button>
+        <el-button size="default" @click="closeDetailDialog">取消</el-button>
       </div>
     </el-dialog>
   </div>
