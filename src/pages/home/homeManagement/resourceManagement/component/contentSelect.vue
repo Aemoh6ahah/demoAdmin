@@ -1,11 +1,10 @@
 <template>
   <div>
-    <el-button size="default" type="primary" @click="dialogVisible = true"
-      >添加</el-button
-    >
+    <el-button size="default" type="primary" @click="open">添加</el-button>
     <el-dialog
+      v-if="dialogVisible"
       v-model="dialogVisible"
-      title="选择用户"
+      :title="`选择${linkMap[idMap[linkType]].label}`"
       width="700px"
       :before-close="handleClose"
     >
@@ -35,26 +34,36 @@
           @search="search"
           @reset="reset"
           :footerLabel="'列表数据'"
+          :selections="selections"
         >
         </custom-table>
       </div>
       <template #footer>
         <span class="dialog-footer">
           <el-button type="primary" @click="dialogVisible = false"
-            >Confirm</el-button
+            >确定</el-button
           >
-          <el-button @click="dialogVisible = false">Cancel</el-button>
+          <el-button @click="dialogVisible = false">取消</el-button>
         </span>
       </template>
     </el-dialog>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, Ref } from "vue";
+import { defineComponent, ref, Ref, getCurrentInstance } from "vue";
 import CustomTable from "@/components/commonTable/index.vue";
+import { linkMap, idMap } from "../const";
 export default defineComponent({
   components: { CustomTable },
-  setup() {
+  props: {
+    linkType: {
+      type: String,
+    },
+  },
+  setup(props) {
+    const { proxy } = getCurrentInstance();
+    const _this: any = proxy;
+
     const dialogVisible: Ref<boolean> = ref(false);
 
     const handleClose = () => {};
@@ -83,10 +92,9 @@ export default defineComponent({
     };
     const tableColumns = [
       {
-        width: 60,
-        prop: "",
+        width: 65,
         align: "center",
-        customSolt: "radio",
+        componentSolt: "TableRadio",
       },
       {
         type: "index",
@@ -108,11 +116,39 @@ export default defineComponent({
         align: "center",
       },
     ];
+
+    const selections = ref({
+      rowKey: "a",
+      selectRowKeys: [],
+      selectRowKey: "a1",
+      selectRows: [],
+    });
+
+    const search = () => {};
+    const reset = () => {};
+
+    const open = () => {
+      if (!props.linkType) {
+        _this.$ElMessage({
+          type: "error",
+          message: "请选择跳转目标",
+        });
+        return;
+      }
+      dialogVisible.value = true;
+    };
+
     return {
       dialogVisible,
       handleClose,
       loadData,
+      search,
+      reset,
       tableColumns,
+      selections,
+      linkMap,
+      idMap,
+      open,
     };
   },
 });

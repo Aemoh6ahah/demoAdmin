@@ -1,11 +1,11 @@
 <template>
   <div class="container">
-    <card-header :name="'称号列表'">
+    <card-header :name="'资源位列表'">
       <template #operate-btns>
         <el-button
           size="default"
           type="primary"
-          @click="$router.push('/userLabel/medalManagement/addMedal')"
+          @click="$router.push('/home/resourceManagement/addResource')"
           >新增</el-button
         >
         <el-button size="default" @click="search" type="primary"
@@ -16,10 +16,10 @@
       <template #filters>
         <div class="form_wapper">
           <el-form size="default" class="filter-form" label-position="left">
-            <el-form-item label="称号名称">
+            <el-form-item label="标题名称">
               <el-input
                 v-model="filterForm.name"
-                placeholder="请输入称号名称"
+                placeholder="请输入标题名称"
               ></el-input>
             </el-form-item>
             <el-form-item label="状态">
@@ -95,7 +95,7 @@ export default defineComponent({
           _this.$Modal.comfirm({
             title: "删除",
             content: `是否删除这条数据`,
-            okText: "确定",
+            okText: "继续",
             ok: async () => {
               try {
                 _this.$refs.table.refresh(true);
@@ -120,7 +120,7 @@ export default defineComponent({
         label: "编辑",
         icon: "el-icon-edit",
         cb: (scope) => {
-          _this.$router.push("/userLabel/medalManagement/modifyMedal");
+          _this.$router.push("/home/resourceManagement/modifyResource");
         },
       },
       {
