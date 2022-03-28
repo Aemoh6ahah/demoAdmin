@@ -24,6 +24,7 @@
               v-bind="computeAttr(column.componentSolt)"
               @refresh="refresh(false)"
               @changeState="changeState"
+              @radioSet="radioSet"
             ></component>
           </template>
           <template v-if="column.customSolt">
@@ -46,7 +47,7 @@
       :total="pagination.total"
       :page-sizes="pageSizes"
       @size-change="sizeChange"
-      size="small"
+      size="default"
       :page-size="pagination.pageSize"
       :current-page="pagination.page"
       @current-change="currentChange"
@@ -60,6 +61,7 @@ import State from "./components/state.vue";
 import StateSwitch from "./components/stateSwitch.vue";
 import Operate from "./components/operate.vue";
 import LineText from "./components/lineText.vue";
+import TableRadio from "./components/radio.vue";
 
 /**
  * @param columns.customSolt 列表项配置
@@ -97,16 +99,10 @@ export default defineComponent({
     SSConfig: {
       type: Object as PropType<SSCONFIG>,
       required: false,
-      default: () => {
-        return {};
-      },
     },
     stateConfig: {
       type: Array as PropType<STATECONFIG[]>,
       required: false,
-      default: () => {
-        return [];
-      },
     },
     operations: {
       type: Array as PropType<OPERATION[]>,
@@ -122,9 +118,12 @@ export default defineComponent({
         return "数据";
       },
     },
+    selections: {
+      type: Object,
+    },
   },
 
-  components: { State, StateSwitch, Operate, LineText },
+  components: { State, StateSwitch, Operate, LineText, TableRadio },
 
   setup() {
     const sourceData: Ref<any[]> = ref([]);
@@ -188,27 +187,35 @@ export default defineComponent({
 
     changeState(v: boolean, scope: { [name: string]: any }, targetVal: number) {
       // 操作开关
-      this.$ElMessageBox
-        .confirm(
-          `${v ? this.SSConfig.onlineText : this.SSConfig.offlineText}`,
-          "提示",
-          {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
-            type: "warning",
+      this.$Modal.comfirm({
+        title: "提示",
+        content: `${v ? this.SSConfig.onlineText : this.SSConfig.offlineText}`,
+        okText: "确定",
+        ok: async () => {
+          try {
+            await this.SSConfig.interface(
+              scope.row[this.SSConfig.key],
+              targetVal
+            );
+            this.refresh(false);
+            this.$ElMessage({
+              type: "success",
+              message: "操作成功!",
+            });
+          } catch (error) {
+            this.$ElMessage({
+              type: "error",
+              message: "删除失败!",
+            });
           }
-        )
-        .then(async () => {
-          await this.SSConfig.interface(
-            scope.row[this.SSConfig.key],
-            targetVal
-          );
-          this.refresh(false);
-          this.$ElMessage({
-            type: "success",
-            message: "操作成功!",
-          });
-        });
+        },
+      });
+    },
+
+    radioSet(key, row) {
+      // radio组件选择
+      this.selections.selectRowKey = key;
+      this.selections.selectRowK = row;
     },
 
     computeAttr(key) {
@@ -223,6 +230,9 @@ export default defineComponent({
           break;
         case "operate":
           res = { operations: this.operations };
+          break;
+        case "TableRadio":
+          res = { selections: this.selections };
           break;
         default:
           break;

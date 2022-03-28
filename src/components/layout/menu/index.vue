@@ -3,7 +3,7 @@
     <div :class="isCollapse ? 'collapse logo' : 'logo'"></div>
     <el-menu
       :uniqueOpened="true"
-      :default-active="$route.name"
+      :default-active="activeName"
       class="el-menu-vertical-demo"
       :collapse="isCollapse"
       background-color="#232a36"
@@ -11,21 +11,25 @@
       @select="selectMeun"
       active-text-color="#fff"
     >
-      <el-submenu
+      <el-sub-menu
         :index="i.name"
         v-for="i in renderMenuMap"
         v-show="!i.meta.hidden"
         :key="i.name"
       >
         <template #title>
-          <i :class="i.meta.icon"></i><span>{{ i.meta.title }}</span>
+          <span>{{ i.meta.title }}</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item v-for="j in i.children" :key="j.name" :index="j.name">{{
-            j.meta.title
-          }}</el-menu-item>
+          <el-menu-item
+            v-for="j in i.children"
+            :key="j.name"
+            v-show="!j.meta.hidden"
+            :index="j.name"
+            >{{ j.meta.title }}</el-menu-item
+          >
         </el-menu-item-group>
-      </el-submenu>
+      </el-sub-menu>
     </el-menu>
   </div>
 </template>
@@ -45,10 +49,17 @@ export default defineComponent({
     renderMenuMap() {
       return this.routeMap[0].children;
     },
+    routeNames() {
+      return this.$route.matched.map((_) => _.name);
+    },
+    activeName() {
+      return this.routeNames.length > 3 ? this.routeNames[2] : this.$route.name;
+    },
   },
 
   methods: {
     selectMeun(index: string, path: string) {
+      // return;
       this.$router.push({ name: index });
     },
     handleCollapse(isCollapse) {
@@ -88,12 +99,12 @@ export default defineComponent({
 .el-menu {
   border: none;
 }
-/deep/.el-submenu {
+/deep/.el-sub-menu {
   .el-menu-item.is-active {
     background-color: #4662e6 !important;
   }
   &.is-active {
-    .el-submenu__title {
+    .el-sub-menu__title {
       color: #fff !important;
       i {
         color: #fff !important;
@@ -105,7 +116,7 @@ export default defineComponent({
 .collapse {
   width: 66px;
 }
-/deep/.el-submenu__title {
+/deep/.el-sub-menu__title {
   display: flex;
   align-items: center;
   justify-content: flex-start;

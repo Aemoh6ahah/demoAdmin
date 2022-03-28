@@ -5,14 +5,17 @@ function formatQueryform(queryForm) {
       queryParams[key] = queryForm[key];
     }
   }
-  for (const key in queryForm.times) {
-    let start = key;
-    let end = key;
-    start = firstWordLowerCase(start.replace("_", "Start"));
-    end = firstWordLowerCase(end.replace("_", "End"));
-    queryParams[start] = timeFormat(queryForm.times[key][0]);
-    queryParams[end] = timeFormat(queryForm.times[key][1]);
+  if (queryForm.times) {
+    for (const key in queryForm.times) {
+      let start = key;
+      let end = key;
+      start = firstWordLowerCase(start.replace("_", "Start"));
+      end = firstWordLowerCase(end.replace("_", "End"));
+      queryParams[start] = timeFormat(queryForm.times[key][0]);
+      queryParams[end] = timeFormat(queryForm.times[key][1]);
+    }
   }
+
   return queryParams;
 }
 

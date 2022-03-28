@@ -5569,6 +5569,7 @@
   -webkit-box-flex: 1;
   -ms-flex: 1;
   flex: 1;
+  flex-grow: 0;
   line-height: 40px;
   position: relative;
   font-size: 14px;

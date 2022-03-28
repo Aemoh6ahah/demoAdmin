@@ -5,7 +5,7 @@ let env = x_env
 let version = x_version
 if (window.location.href.indexOf('dev') != -1 || env.indexOf('testing') != -1) {//测试环境接口地址
   var BASE_URL = 'http://192.168.0.178:7052/'
-  // var BASE_URL = ''
+  var FILE_URL = 'http://localhost:3000'
   console.log(`当前版本：测试：`, env, version, window.location.href)
 } else if (env.indexOf('staging') != -1) {//演示环境地址
   var BASE_URL = ''
@@ -17,4 +17,5 @@ if (window.location.href.indexOf('dev') != -1 || env.indexOf('testing') != -1) {
 
 export default {
   BASE_URL,
+  FILE_URL,
 }

@@ -21,7 +21,7 @@
         <div v-if="footer">
           <div
             class="button primary"
-            size="small"
+            size="default"
             @click.stop="HandleOk"
             type="primary"
           >
@@ -29,7 +29,7 @@
           </div>
           <div
             class="button"
-            size="small"
+            size="default"
             @click.stop="HandleCancel"
             style="margin-left: 24px"
           >
@@ -43,8 +43,8 @@
   </div>
 </template>
 <script>
-import "@/assets/style/theme/index.css";
-import "@/assets/style/element.less";
+// import "@/assets/style/theme/index.css";
+// import "@/assets/style/element.less";
 export default {
   data() {
     return {
