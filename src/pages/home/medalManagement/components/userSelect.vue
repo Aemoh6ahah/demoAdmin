@@ -13,30 +13,48 @@
         <el-input
           placeholder="请输入用户ID"
           style="width: 200px; margin-right: 12px"
+          v-model="filterForm.userId"
         ></el-input>
-        <el-input
-          placeholder="请输入用户角色"
+        <el-select
+          placeholder="请选择用户角色"
           style="width: 200px; margin-right: 50px"
-        ></el-input>
-        <el-button
-          type="primary"
-          style="margin-right: 0"
-          @click="dialogVisible = false"
+          v-model="filterForm.role"
+        >
+          <el-option
+            v-for="r in roles"
+            :key="r.id"
+            :label="r.display_name"
+            :value="r.name"
+          ></el-option>
+        </el-select>
+        <el-button type="primary" style="margin-right: 0" @click="search"
           >查询</el-button
         >
-        <el-button @click="dialogVisible = false">重置</el-button>
+        <el-button @click="reset">重置</el-button>
       </div>
       <div>
-        <custom-table
-          ref="table"
-          :columns="tableColumns"
+        <select-table
+          v-if="dialogVisible"
           :loadData="loadData"
-          :queryParams="{}"
+          :columns="tableColumns"
+          ref="table"
           @search="search"
           @reset="reset"
-          :footerLabel="'列表数据'"
+          @checkChange="selectChange"
+          :selectRowKeys="selectRowKeys"
         >
-        </custom-table>
+          <template #role="row">
+            <div
+              class="line-text"
+              style="-webkit-line-clamp: 1"
+              :title="row.row.roles.map((_) => _.display_name)"
+            >
+              <span v-for="role in row.row.roles" :key="role.id">{{
+                role.display_name
+              }}</span>
+            </div>
+          </template>
+        </select-table>
       </div>
       <template #footer>
         <span class="dialog-footer">
@@ -50,69 +68,95 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, Ref } from "vue";
+import {
+  defineComponent,
+  ref,
+  Ref,
+  getCurrentInstance,
+  reactive,
+  computed,
+} from "vue";
 import CustomTable from "@/components/commonTable/index.vue";
+import SelectTable from "@/components/selectTable/index.vue";
+import { getUserList, userRoles } from "@/services/medal";
 export default defineComponent({
-  components: { CustomTable },
+  components: { SelectTable },
   setup() {
-    const dialogVisible: Ref<boolean> = ref(false);
+    const dialogVisible: Ref<boolean> = ref(true);
+    const table = ref(null);
+
+    const { proxy } = getCurrentInstance();
+    const _this = proxy;
 
     const handleClose = () => {};
 
     const loadData = (query): Promise<any> => {
-      const { currentPage, pageSize } = query;
-      return new Promise((res) => {
-        res({
-          pageNum: 1,
-          pageSize: 10,
-          pages: 1,
-          rows: [
-            { a: "a1", b: "b", c: "c", state: 1, id: 1 },
-            { a: "a2", b: "b", c: "c", state: 1, id: 2 },
-            { a: "a3", b: "b", c: "c", state: 1, id: 3 },
-            { a: "a4", b: "b", c: "c", state: 1, id: 4 },
-            { a: "a5", b: "b", c: "c", state: 1, id: 5 },
-          ],
-          total: 1,
-        });
+      const { currentPage, pageSize, pageNum } = query;
+      console.log(query);
+      return getUserList({ ...queryFrom, page: pageNum }).then((res) => {
+        return res;
       });
-      // return mallPageList({ ...query, ...this.queryForm }).then((res) => {
-      //   const { data } = res;
-      //   return data;
-      // });
     };
+
     const tableColumns = [
       {
-        width: 60,
-        prop: "",
-        align: "center",
-        customSolt: "radio",
-      },
-      {
-        type: "index",
         width: 156,
         label: "用户ID",
-        prop: "",
+        prop: "id",
         align: "center",
       },
       {
+        width: 156,
         label: "用户昵称",
-        prop: "a",
+        prop: "name",
         componentSolt: "lineText",
         align: "center",
       },
       {
         label: "用户角色",
-        prop: "b",
-        componentSolt: "lineText",
+        width: 156,
+        prop: "role",
+        customSolt: "role",
         align: "center",
       },
     ];
+    // 表格
+    const filterForm = reactive({ userId: "", role: "" });
+    let queryFrom = { userId: "", role: "" };
+
+    const search = () => {
+      queryFrom = { ...filterForm };
+      table.value.refresh(true);
+    };
+    const reset = () => {
+      filterForm.userId = "";
+      filterForm.role = "";
+      search();
+    };
+
+    const selectRowKeys = ref([1, 3, 5, 7, 13]);
+    const selectChange = (e, list) => {
+      selectRowKeys.value = [...e];
+    };
+
+    // 获取用户角色
+    const roles = ref([]);
+    const getUserRoles = async () => {
+      roles.value = await userRoles();
+    };
+    getUserRoles();
     return {
       dialogVisible,
       handleClose,
       loadData,
       tableColumns,
+      reset,
+      roles,
+      table,
+      search,
+      filterForm,
+      selectChange,
+      selectRowKeys,
     };
   },
 });

@@ -3,6 +3,7 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import ElementPlus from "element-plus";
+import { Table } from 'ant-design-vue';
 import "@/assets/style/reset.css";
 import '@/assets/style/common.less'
 // import '@/assets/style/theme/index.css'
@@ -21,5 +22,6 @@ app.use(ElementPlus, {
   size: 'small',
 });
 app.use(store);
+app.use(Table);
 app.use(router);
 app.mount("#app");
