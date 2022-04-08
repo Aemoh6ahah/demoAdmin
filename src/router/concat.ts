@@ -28,6 +28,16 @@ export default [
     component: () => import("@/pages/home/404/404.vue"),
   },
   {
+    path: "/login",
+    name: "login",
+    component: () => import("@/pages/login/login.vue"),
+  },
+  {
+    path: "/registe",
+    name: "registe",
+    component: () => import("@/pages/login/registe.vue"),
+  },
+  {
     path: "/:catchAll(.*)",
     redirect: { name: "notfound" },
   }

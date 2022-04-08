@@ -16,7 +16,7 @@ module.exports = {
     config
       .plugin('html')
       .tap(args => {
-        args[0].title = '用户社区管理台'
+        args[0].title = '阿巴阿巴管理系统'
         return args
       })
   }

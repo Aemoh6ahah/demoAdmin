@@ -1,14 +1,16 @@
+// import { ElMessageBox } from 'element-plus';
 // import { ElMessage } from 'element-plus';
-// const message = ElMessage
-
+const element = require('element-plus')
+const message = element.ElMessage
 const codeHandle = (data, option) => {
+  console.log(data);
   switch (data.code) {
     case 200:
       return data
     default:
       // message.close()
       if (data.code) {
-        // data.code && message.error(data.message || '请求失败，请重新尝试')
+        data.code && message.error(data.message || '请求失败，请重新尝试')
         return Promise.reject(data)
       } else {
         return Promise.resolve(data)
