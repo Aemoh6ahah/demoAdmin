@@ -1,8 +1,9 @@
 <template>
   <div>
-    <el-button size="default" type="primary" @click="dialogVisible = true"
+    <el-button size="default" type="primary" @click="showDialog"
       >添加</el-button
     >
+    已选择{{ selectRowKeys.length }}个
     <el-dialog
       v-model="dialogVisible"
       title="选择用户"
@@ -58,10 +59,8 @@
       </div>
       <template #footer>
         <span class="dialog-footer">
-          <el-button type="primary" @click="dialogVisible = false"
-            >Confirm</el-button
-          >
-          <el-button @click="dialogVisible = false">Cancel</el-button>
+          <el-button type="primary" @click="confirm">确定</el-button>
+          <el-button @click="cancel">取消</el-button>
         </span>
       </template>
     </el-dialog>
@@ -82,7 +81,7 @@ import { getUserList, userRoles } from "@/services/medal";
 export default defineComponent({
   components: { SelectTable },
   setup() {
-    const dialogVisible: Ref<boolean> = ref(true);
+    const dialogVisible: Ref<boolean> = ref(false);
     const table = ref(null);
 
     const { proxy } = getCurrentInstance();
@@ -134,7 +133,8 @@ export default defineComponent({
       search();
     };
 
-    const selectRowKeys = ref([1, 3, 5, 7, 13]);
+    const selectRowKeys = ref([]);
+    const preSelectRowKeys = ref([]);
     const selectChange = (e, list) => {
       selectRowKeys.value = [...e];
     };
@@ -145,6 +145,27 @@ export default defineComponent({
       roles.value = await userRoles();
     };
     getUserRoles();
+
+    // 打开弹窗
+    const showDialog = () => {
+      preSelectRowKeys.value = [...selectRowKeys.value];
+      dialogVisible.value = true;
+    };
+    // 确定
+    const confirm = () => {
+      preSelectRowKeys.value = [...selectRowKeys.value];
+      dialogVisible.value = false;
+    };
+    // 取消
+    const cancel = () => {
+      selectRowKeys.value = [...preSelectRowKeys.value];
+      dialogVisible.value = false;
+    };
+
+    const setPreSelectRowKeys = (ids) => {
+      preSelectRowKeys.value = [...ids];
+    };
+
     return {
       dialogVisible,
       handleClose,
@@ -157,6 +178,11 @@ export default defineComponent({
       filterForm,
       selectChange,
       selectRowKeys,
+      showDialog,
+      preSelectRowKeys,
+      confirm,
+      setPreSelectRowKeys,
+      cancel,
     };
   },
 });

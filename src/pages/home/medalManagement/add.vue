@@ -5,8 +5,10 @@
       <el-form
         :model="form"
         label-width="100px"
+        ref="labelForm"
         size="default"
         label-position="left"
+        :rules="rules"
       >
         <el-form-item label="称号名称" prop="name" required>
           <el-input
@@ -20,13 +22,14 @@
             </template>
           </el-input>
         </el-form-item>
-        <el-form-item label="称号图片" prop="name" required>
+        <el-form-item label="称号图片" required>
           <el-upload
             class="avatar-uploader"
-            action="https://jsonplaceholder.typicode.com/posts/"
             :show-file-list="false"
+            action="/"
             :on-success="handlCoverSuccess"
             :before-upload="beforeCoverUpload"
+            :http-request="upload"
           >
             <img v-if="imageUrl" :src="imageUrl" class="avatar" />
             <div v-else>
@@ -40,11 +43,13 @@
             </div>
           </el-upload>
         </el-form-item>
-        <el-form-item label="选择用户" prop="name">
-          <user-select></user-select>
+        <el-form-item label="选择用户">
+          <user-select ref="userSelect"></user-select>
         </el-form-item>
         <div class="btns">
-          <el-button type="primary" style="margin-right: 8px">确定</el-button>
+          <el-button type="primary" @click="save" style="margin-right: 8px"
+            >确定</el-button
+          >
           <el-button @click="cancel">取消</el-button>
         </div>
       </el-form>
@@ -55,30 +60,93 @@
 import { defineComponent, reactive, ref, getCurrentInstance } from "vue";
 import userSelect from "./components/userSelect.vue";
 import { Plus } from "@element-plus/icons-vue";
+import { addLabel, obsConfig, ossUplaod } from "@/services/medal";
+import uploadUsingFile from "@/utils/hwobs.js";
 export default defineComponent({
   components: { Plus, userSelect },
   setup() {
     const { proxy } = getCurrentInstance();
-    let p: any = proxy;
+    let _this: any = proxy;
 
     const form = reactive({ name: "" });
+    const userSelect = ref();
+    const labelForm = ref();
 
-    const imageUrl = ref("");
+    const imageUrl = ref(
+      "http://www.mongoosejs.net/docs/images/mongoose5_62x30_transparent.png"
+    );
 
     const handlCoverSuccess = () => {};
     const beforeCoverUpload = () => {};
 
     const cancel = () => {
-      p.$Modal.comfirm({
+      _this.$Modal.comfirm({
         title: "提示",
         content: `取消后当前页面本次变更内容将丢失，确认取消吗？`,
         okText: "确定",
         ok: async () => {
-          p.$router.push("/userLabel/medalManagement/medalList");
+          _this.$router.push("/userLabel/medalManagement/medalList");
         },
       });
     };
-    return { form, imageUrl, handlCoverSuccess, beforeCoverUpload, cancel };
+
+    const rules = reactive({
+      name: [{ required: true, trigger: "blur", message: "请输入称号名称" }],
+    });
+
+    const save = async () => {
+      // await labelForm.value.validate();
+      if (!imageUrl.value) {
+        _this.$message.error("上传图片");
+        return;
+      }
+      await labelForm.value.validate();
+      await addLabel({
+        name: form.name,
+        pictureUrl: imageUrl.value,
+        status: 0,
+        userIdLists: userSelect.value.preSelectRowKeys,
+      });
+      _this.$message.success("添加成功");
+      _this.$router.push("/userLabel/medalManagement/medalList");
+    };
+
+    // 上传
+    const headers = ref({});
+    const action = ref("");
+    let config: any = {};
+    const getConfig = async () => {
+      const { data } = await obsConfig();
+      config = data;
+      action.value = data.endPoint;
+      headers.value = {};
+      console.log(data);
+    };
+    getConfig();
+    const upload = async (a) => {
+      await uploadUsingFile(
+        config.bucketName,
+        "aaxxxa.png",
+        a.file,
+        config.credential.access,
+        config.credential.secret,
+        "http://" + config.endPoint
+      );
+    };
+    return {
+      form,
+      imageUrl,
+      handlCoverSuccess,
+      beforeCoverUpload,
+      cancel,
+      rules,
+      labelForm,
+      userSelect,
+      action,
+      headers,
+      save,
+      upload,
+    };
   },
 });
 </script>

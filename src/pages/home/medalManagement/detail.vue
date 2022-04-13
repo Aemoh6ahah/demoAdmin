@@ -7,37 +7,66 @@
         基本信息
       </div>
       <el-descriptions title="" :column="4">
-        <el-descriptions-item label="称号ID">kooriookami</el-descriptions-item>
-        <el-descriptions-item label="称号名字"
-          >18100000000</el-descriptions-item
-        >
-        <el-descriptions-item label="创建时间">创建时间</el-descriptions-item>
-        <el-descriptions-item label="称号状态">称号状态</el-descriptions-item>
-        <el-descriptions-item label="称号图片">称号图片</el-descriptions-item>
-        <el-descriptions-item label="使用中人数"
-          >使用中人数</el-descriptions-item
-        >
+        <el-descriptions-item label="称号ID">{{
+          labelDetail.id
+        }}</el-descriptions-item>
+        <el-descriptions-item label="称号名字">{{
+          labelDetail.name
+        }}</el-descriptions-item>
+        <el-descriptions-item label="创建时间">{{
+          labelDetail.createTime
+        }}</el-descriptions-item>
+        <el-descriptions-item label="称号状态">{{
+          labelDetail.status ? "上线中" : "已下线"
+        }}</el-descriptions-item>
+        <el-descriptions-item label="称号图片">
+          <img :src="labelDetail.pictureUrl" class="label-cover" alt="" />
+        </el-descriptions-item>
+        <el-descriptions-item label="使用中人数">{{
+          labelDetail.useCount
+        }}</el-descriptions-item>
       </el-descriptions>
       <div class="des-title">
         <span class="icon"></span>
         用户列表
       </div>
       <div style="text-align: left; margin-bottom: 12px">
-        <el-button type="primary">查看用户列表</el-button>
+        <user-table :titleId="labelDetail.id"></user-table>
       </div>
       <div class="des-title">
         <span class="icon"></span>
         操作日志
       </div>
+      <el-table :data="labelDetail.operateLogVoList" style="width: 600px">
+        <el-table-column prop="index" label="序号" width="180" />
+        <el-table-column prop="operatorName" label="操作" width="180" />
+        <el-table-column prop="createTime" label="操作时间" />
+        <el-table-column prop="operatorName" label="操作人" />
+      </el-table>
     </el-card>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent } from "vue";
-
+import { defineComponent, getCurrentInstance, ref } from "vue";
+import { getLabel } from "@/services/medal";
+import userTable from "./components/userTable.vue";
 export default defineComponent({
+  components: { userTable },
   setup() {
-    return {};
+    const { proxy } = getCurrentInstance();
+    const _this = proxy;
+
+    const labelDetail = ref({});
+    const getLabelById = async () => {
+      const { data } = await getLabel(_this.$route.query.id);
+      labelDetail.value = data;
+      console.log(data);
+    };
+    getLabelById();
+
+    return {
+      labelDetail,
+    };
   },
 });
 </script>
@@ -67,5 +96,9 @@ export default defineComponent({
   line-height: 20px;
   text-align: left;
   margin-bottom: 20px;
+}
+.label-cover {
+  width: 90px;
+  height: 40px;
 }
 </style>

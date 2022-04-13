@@ -18,13 +18,13 @@
           <el-form size="default" class="filter-form" label-position="left">
             <el-form-item label="称号名称">
               <el-input
-                v-model="filterForm.name"
+                v-model="filterForm.titleName"
                 placeholder="请输入称号名称"
               ></el-input>
             </el-form-item>
             <el-form-item label="状态">
               <el-select
-                v-model="filterForm.state"
+                v-model="filterForm.status"
                 size="default"
                 placeholder="请选择"
               >
@@ -45,15 +45,11 @@
       @reset="reset"
       :operations="operations"
       :footerLabel="'列表数据'"
-      :SSConfig="{
-        key: 'id',
-        interface: () => {},
-        onlineText: '上线',
-        offlineText: '下线',
-        onlineState: 1,
-        offlineState: 0,
-      }"
+      :SSConfig="SSConfig"
     >
+      <template #img="{ row }">
+        <img :src="row.pictureUrl" class="medal-cover" alt="" />
+      </template>
     </custom-table>
   </div>
 </template>
@@ -70,11 +66,13 @@ import {
   nextTick,
 } from "vue";
 import CustomTable from "@/components/commonTable/index.vue";
+import {
+  userRoles,
+  labelList,
+  delLabel,
+  modifyLabelState,
+} from "@/services/medal";
 import { columns } from "./const";
-interface FormData {
-  account: string;
-  psw: string;
-}
 export default defineComponent({
   name: "listPage",
   components: { CustomTable },
@@ -84,8 +82,8 @@ export default defineComponent({
 
     const tableColumns = reactive(columns);
 
-    const filterForm = reactive({});
-    const queryForm = reactive({});
+    const filterForm = reactive({ titleName: "", status: "" });
+    const queryForm = reactive({ titleName: "", status: "" });
 
     const operations: OPERATION[] = reactive([
       {
@@ -98,6 +96,7 @@ export default defineComponent({
             okText: "确定",
             ok: async () => {
               try {
+                await delLabel(scope.row.id);
                 _this.$refs.table.refresh(true);
                 _this.$ElMessage({
                   type: "success",
@@ -120,18 +119,30 @@ export default defineComponent({
         label: "编辑",
         icon: "el-icon-edit",
         cb: (scope) => {
-          _this.$router.push("/userLabel/medalManagement/modifyMedal");
+          _this.$router.push(
+            `/userLabel/medalManagement/modifyMedal/?id=${scope.row.id}`
+          );
         },
       },
       {
         label: "查看",
         icon: "el-icon-search",
         cb: (scope) => {
-          _this.$router.push("/userLabel/medalManagement/medalDetail");
+          _this.$router.push(
+            `/userLabel/medalManagement/medalDetail/?id=${scope.row.id}`
+          );
         },
       },
     ]);
 
+    const SSConfig: SSCONFIG = {
+      key: "id",
+      interface: modifyLabelState,
+      onlineText: "上线",
+      offlineText: "下线",
+      onlineState: 1,
+      offlineState: 0,
+    };
     return {
       tableColumns,
       queryForm,
@@ -139,24 +150,16 @@ export default defineComponent({
       filterForm,
       operations,
       ...toRefs(filterForm),
+      SSConfig,
     };
   },
   methods: {
     loadData(query): Promise<any> {
-      const { currentPage, pageSize } = query;
-      return new Promise((res) => {
-        res({
-          pageNum: 1,
-          pageSize: 10,
-          pages: 1,
-          rows: [{ a: "a", b: "b", c: "c", state: 1 }],
-          total: 1,
-        });
+      return labelList({ ...query, ...this.queryForm }).then((res) => {
+        const { data } = res;
+        data.rows = data.rows.map((_) => ({ ..._, state: _.status }));
+        return data;
       });
-      // return mallPageList({ ...query, ...this.queryForm }).then((res) => {
-      //   const { data } = res;
-      //   return data;
-      // });
     },
 
     search() {
@@ -170,14 +173,11 @@ export default defineComponent({
     },
 
     reset() {
-      this.filterForm.carModelId = "";
-      this.filterForm.url = "";
-      this.filterForm.times._Time = [];
+      this.filterForm.status = "";
+      this.filterForm.titleName = "";
 
-      this.queryForm.carModelId = "";
-      this.queryForm.url = "";
-      this.queryForm.endTime = "";
-      this.queryForm.startTime = "";
+      this.queryForm.status = "";
+      this.queryForm.titleName = "";
 
       this.$refs.table.refresh(true);
     },
@@ -185,4 +185,8 @@ export default defineComponent({
 });
 </script>
 <style lang="less" scoped>
+.medal-cover {
+  height: 40px;
+  width: 90px;
+}
 </style>

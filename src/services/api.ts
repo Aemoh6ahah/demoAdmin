@@ -6,6 +6,7 @@ let version = x_version
 if (window.location.href.indexOf('dev') != -1 || env.indexOf('testing') != -1) {//测试环境接口地址
   var BASE_URL = 'http://192.168.0.178:7052/'
   var ECARX_URL = 'https://community-test.ecarxgroup.com'
+  var CARLINX_URL ="https://club-test.xchanger.cn"
   // var BASE_URL = ''
   console.log(`当前版本：测试：`, env, version, window.location.href)
 } else if (env.indexOf('staging') != -1) {//演示环境地址
@@ -19,4 +20,5 @@ if (window.location.href.indexOf('dev') != -1 || env.indexOf('testing') != -1) {
 export default {
   BASE_URL,
   ECARX_URL,
+  CARLINX_URL,
 }

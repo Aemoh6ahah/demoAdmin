@@ -41,6 +41,7 @@
       条
     </div>
     <el-pagination
+      v-if="pagination.page"
       class="pagination"
       background
       layout=" prev, pager, next"
