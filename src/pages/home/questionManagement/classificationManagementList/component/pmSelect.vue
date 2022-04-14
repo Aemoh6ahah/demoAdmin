@@ -1,9 +1,5 @@
 <template>
   <div>
-    <el-button size="default" type="primary" @click="showDialog"
-      >添加</el-button
-    >
-    已选择{{ selectRowKeys.length }}个
     <el-dialog
       v-model="dialogVisible"
       title="选择用户"
@@ -79,8 +75,9 @@ import CustomTable from "@/components/commonTable/index.vue";
 import SelectTable from "@/components/selectTable/index.vue";
 import { getUserList, userRoles } from "@/services/medal";
 export default defineComponent({
+  props: ["preSelectRowKeys"],
   components: { SelectTable },
-  setup() {
+  setup(props) {
     const dialogVisible: Ref<boolean> = ref(false);
     const table = ref(null);
 
@@ -134,7 +131,6 @@ export default defineComponent({
     };
 
     const selectRowKeys = ref([]);
-    const preSelectRowKeys = ref([]);
     const selectChange = (e, list) => {
       selectRowKeys.value = [...e];
     };
@@ -148,17 +144,15 @@ export default defineComponent({
 
     // 打开弹窗
     const showDialog = () => {
-      preSelectRowKeys.value = [...selectRowKeys.value];
+      selectRowKeys.value = [...props.preSelectRowKeys];
       dialogVisible.value = true;
     };
     // 确定
     const confirm = () => {
-      preSelectRowKeys.value = [...selectRowKeys.value];
       dialogVisible.value = false;
     };
     // 取消
     const cancel = () => {
-      selectRowKeys.value = [...preSelectRowKeys.value];
       dialogVisible.value = false;
     };
 
@@ -179,7 +173,6 @@ export default defineComponent({
       selectChange,
       selectRowKeys,
       showDialog,
-      preSelectRowKeys,
       confirm,
       setPreSelectRowKeys,
       cancel,

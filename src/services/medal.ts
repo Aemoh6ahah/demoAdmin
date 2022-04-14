@@ -14,7 +14,8 @@ const medal = {
   labelList: `${URL.CARLINX_URL}/carlinx/manage/title/list`,
   obsConfig: `${URL.CARLINX_URL}/carlinx/obs/temporary/account`,
   medalUserList: `${URL.CARLINX_URL}/carlinx/manage/title/user/relation/list`,
-  // /carlinx/
+  uploadFile: `${URL.CARLINX_URL}/carlinx/obs/file/upload`,
+  // /carlinx/obs/file/upload
 }
 
 type LABLEDATA = {
@@ -67,4 +68,8 @@ export async function modifyLabelState(id: string) {
 
 export async function medalUserList(data: LABLEDATA) {
   return request(medal.medalUserList, METHOD.POST, data);
+}
+
+export async function uploadFile(data) {
+  return request(medal.uploadFile, METHOD.PUT, data);
 }

@@ -69,6 +69,8 @@ export default defineComponent({
     transition: 0.1s;
     background: #f4f6fa;
     overflow: auto;
+    box-sizing: border-box;
+    padding-bottom: 61px;
   }
   .isCollapse {
     padding-left: 65px;

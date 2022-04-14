@@ -19,7 +19,7 @@ installTools(app);
 
 app.use(ElementPlus, {
   locale: zhCn,
-  size: 'small',
+  size: 'normal',
 });
 app.use(store);
 app.use(Table);

@@ -189,7 +189,7 @@ export default defineComponent({
     changeState(v: boolean, scope: { [name: string]: any }, targetVal: number) {
       // 操作开关
       this.$Modal.comfirm({
-        title: "提示",
+        title: `${v ? "上线" : "下线"}`,
         content: `${v ? this.SSConfig.onlineText : this.SSConfig.offlineText}`,
         okText: "确定",
         ok: async () => {

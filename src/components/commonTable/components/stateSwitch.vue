@@ -35,7 +35,7 @@ export default defineComponent({
             : 1
           : props.SSConfig.offlineState
           ? props.SSConfig.offlineState
-          : 1;
+          : 0;
         context.emit("changeState", v, props.scope, targetVal);
       },
     });

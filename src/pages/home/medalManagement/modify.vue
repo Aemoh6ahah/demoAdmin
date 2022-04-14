@@ -26,10 +26,10 @@
           <el-upload
             class="avatar-uploader"
             :show-file-list="false"
-            action="/"
+            action="https://club-test.xchanger.cn/carlinx/obs/file/upload"
             :on-success="handlCoverSuccess"
             :before-upload="beforeCoverUpload"
-            :http-request="upload"
+            method="put"
           >
             <img v-if="imageUrl" :src="imageUrl" class="avatar" />
             <div v-else>
@@ -73,21 +73,29 @@ export default defineComponent({
     const userSelect = ref();
     const labelForm = ref();
 
-    const imageUrl = ref(
-      "http://www.mongoosejs.net/docs/images/mongoose5_62x30_transparent.png"
-    );
+    const imageUrl = ref("");
 
     const labelDetail = ref({ id: "" });
     const getLabelById = async () => {
       const { data } = await getLabel(_this.$route.query.id);
       labelDetail.value = data;
       imageUrl.value = data.pictureUrl;
-      userSelect.value.setPreSelectRowKeys(data.id);
+      form.name = data.name;
+      console.log(userSelect.value.setPreSelectRowKeys);
+
+      userSelect.value.setPreSelectRowKeys(data.relationUsers || []);
     };
     getLabelById();
 
-    const handlCoverSuccess = () => {};
-    const beforeCoverUpload = () => {};
+    const handlCoverSuccess = (res) => {
+      imageUrl.value = res.data;
+    };
+    const beforeCoverUpload = (r) => {
+      if (r.size / 1024 / 1024 > 2) {
+        _this.$message.error("请上传不超过2M大小的图片");
+        return false;
+      }
+    };
 
     const cancel = () => {
       _this.$Modal.comfirm({
@@ -131,9 +139,7 @@ export default defineComponent({
       config = data;
       action.value = data.endPoint;
       headers.value = {};
-      console.log(data);
     };
-    getConfig();
     const upload = async (a) => {
       await uploadUsingFile(
         config.bucketName,
@@ -184,6 +190,9 @@ export default defineComponent({
 .btns {
   margin-top: 24px;
   text-align: left;
+}
+.avatar {
+  width: 100px;
 }
 
 .el-icon.avatar-uploader-icon {

@@ -26,10 +26,10 @@
           <el-upload
             class="avatar-uploader"
             :show-file-list="false"
-            action="/"
+            action="https://club-test.xchanger.cn/carlinx/obs/file/upload"
             :on-success="handlCoverSuccess"
             :before-upload="beforeCoverUpload"
-            :http-request="upload"
+            method="put"
           >
             <img v-if="imageUrl" :src="imageUrl" class="avatar" />
             <div v-else>
@@ -60,7 +60,7 @@
 import { defineComponent, reactive, ref, getCurrentInstance } from "vue";
 import userSelect from "./components/userSelect.vue";
 import { Plus } from "@element-plus/icons-vue";
-import { addLabel, obsConfig, ossUplaod } from "@/services/medal";
+import { addLabel, uploadFile } from "@/services/medal";
 import uploadUsingFile from "@/utils/hwobs.js";
 export default defineComponent({
   components: { Plus, userSelect },
@@ -72,12 +72,17 @@ export default defineComponent({
     const userSelect = ref();
     const labelForm = ref();
 
-    const imageUrl = ref(
-      "http://www.mongoosejs.net/docs/images/mongoose5_62x30_transparent.png"
-    );
+    const imageUrl = ref("");
 
-    const handlCoverSuccess = () => {};
-    const beforeCoverUpload = () => {};
+    const handlCoverSuccess = (res) => {
+      imageUrl.value = res.data;
+    };
+    const beforeCoverUpload = (r) => {
+      if (r.size / 1024 / 1024 > 2) {
+        _this.$message.error("请上传不超过2M大小的图片");
+        return false;
+      }
+    };
 
     const cancel = () => {
       _this.$Modal.comfirm({
@@ -115,24 +120,6 @@ export default defineComponent({
     const headers = ref({});
     const action = ref("");
     let config: any = {};
-    const getConfig = async () => {
-      const { data } = await obsConfig();
-      config = data;
-      action.value = data.endPoint;
-      headers.value = {};
-      console.log(data);
-    };
-    getConfig();
-    const upload = async (a) => {
-      await uploadUsingFile(
-        config.bucketName,
-        "aaxxxa.png",
-        a.file,
-        config.credential.access,
-        config.credential.secret,
-        "http://" + config.endPoint
-      );
-    };
     return {
       form,
       imageUrl,
@@ -145,7 +132,6 @@ export default defineComponent({
       action,
       headers,
       save,
-      upload,
     };
   },
 });
